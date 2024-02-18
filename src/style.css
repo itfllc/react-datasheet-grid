@@ -577,3 +577,27 @@
   pointer-events: none;
   background: rgba(0, 0, 0, 0.03);
 }
+
+.gutter-error-cell {
+  border: 1.8px solid red;
+  background: #ffb4b4;
+}
+
+.error-cell::before {
+  content: "";
+  top: 0;
+  right: 0;
+  border-bottom: 1em solid transparent;
+  border-right: 1em solid red;
+  position: absolute;
+  z-index: 100;
+}
+.error-cell::after {
+  content: "";
+  display: block;
+  top: 5px;
+  transform: rotate(45deg);
+  right: 0;
+  position: absolute;
+  z-index: 101;
+}

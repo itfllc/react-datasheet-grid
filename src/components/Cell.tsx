@@ -10,6 +10,8 @@ export const Cell: FC<{
   children?: any
   width: number
   left: number
+  dataTooltipContent?: string
+  dataTooltipId?: string
 }> = ({
   children,
   gutter,
@@ -19,6 +21,8 @@ export const Cell: FC<{
   className,
   width,
   left,
+  dataTooltipContent,
+  dataTooltipId
 }) => {
   return (
     <div
@@ -34,6 +38,8 @@ export const Cell: FC<{
         width,
         left: stickyRight ? undefined : left,
       }}
+      data-tooltip-content={dataTooltipContent}
+      data-tooltip-id={dataTooltipId}
     >
       {children}
     </div>
