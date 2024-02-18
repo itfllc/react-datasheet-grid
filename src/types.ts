@@ -53,6 +53,14 @@ export type Column<T, C, PasteValue> = {
   pasteValue: (opt: { rowData: T; value: PasteValue; rowIndex: number }) => T
   prePasteValues: (values: string[]) => PasteValue[] | Promise<PasteValue[]>
   isCellEmpty: (opt: { rowData: T; rowIndex: number }) => boolean
+  /**
+   * 追加実装
+   * バリデーション関数を追加する
+   * リターンでエラーメッセージを返す
+   * 
+   * @param rowData
+   */
+  validators?: ((rowData: T) => string | undefined)[]
 }
 
 export type SelectionContextType = {
