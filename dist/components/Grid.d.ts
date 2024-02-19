@@ -1,6 +1,5 @@
 import React, { ReactNode, RefObject } from 'react';
 import { Cell, Column, ContextMenuItem, DataSheetGridProps, Selection } from '../types';
-import 'react-tooltip/dist/react-tooltip.css';
 export declare const Grid: <T extends unknown>({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightColumn, displayHeight, headerRowHeight, rowHeight, rowKey, fullWidth, selection, activeCell, rowClassName, cellClassName, children, editing, getContextMenuItems, setRowData, deleteRows, duplicateRows, insertRowAfter, stopEditing, onScroll, }: {
     data: T[];
     columns: Column<T, any, any>[];
