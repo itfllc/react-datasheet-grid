@@ -292,7 +292,10 @@ export const Grid = <T extends any>({
                         setRowData={setGivenRowData(row.index)}
                         columnData={columns[col.index].columnData}
                       />
-                      <Tooltip id="display-react-tooltip" style={{ backgroundColor: "red", color: "white" }} />
+                      {
+                        displayValidationError && <Tooltip id="display-react-tooltip" style={{ backgroundColor: "red", color: "white" }} />
+                      }
+                      
                     </CellComponent>
                 )
               })}
