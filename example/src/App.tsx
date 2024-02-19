@@ -29,7 +29,13 @@ function App() {
     {
       ...keyColumn<Row, 'active'>('active', checkboxColumn),
       title: 'Active',
-      grow: 0.5
+      grow: 0.5,
+      validators: [
+        (rowData) =>
+          !rowData.active ? 'active is required' : undefined,
+        (rowData) =>
+          !rowData.active ? 'testtttttttttt test!' : undefined,
+      ]
     },
     {
       ...keyColumn<Row, 'firstName'>('firstName', textColumn),
@@ -37,6 +43,8 @@ function App() {
       validators: [
         (rowData) =>
           !rowData.firstName ? 'First name is required' : undefined,
+        (rowData) =>
+          !rowData.firstName ? 'testtttttttttt test!' : undefined,
       ]
     },
     {

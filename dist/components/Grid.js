@@ -149,9 +149,11 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                     const cellErrorMessages = (_a = errors[col.index]) !== null && _a !== void 0 ? _a : undefined;
                     const isGutter = col.index === 0;
                     if (isGutter) {
+                        const displayErrors = [];
                         Object.keys(errors).forEach((key) => {
-                            displayValidationError += errors[key].join("\n");
+                            displayErrors.push(errors[key].join("\n"));
                         });
+                        displayValidationError = displayErrors.join("\n");
                     }
                     else {
                         displayValidationError = cellErrorMessages === null || cellErrorMessages === void 0 ? void 0 : cellErrorMessages.join("\n");

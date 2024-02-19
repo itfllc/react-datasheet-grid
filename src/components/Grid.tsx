@@ -237,9 +237,11 @@ export const Grid = <T extends any>({
                 const cellErrorMessages = errors[col.index] ?? undefined;
                 const isGutter = col.index === 0;
                 if (isGutter) {
+                  const displayErrors: string[] = [];
                   Object.keys(errors).forEach((key) => {
-                    displayValidationError += errors[key as any].join("\n");
+                    displayErrors.push(errors[key as any].join("\n"));
                   });
+                  displayValidationError = displayErrors.join("\n");
                 } else {
                   displayValidationError = cellErrorMessages?.join("\n");
                 }
