@@ -31,7 +31,26 @@ const react_1 = __importStar(require("react"));
 const classnames_1 = __importDefault(require("classnames"));
 const Cell = ({ children, gutter, stickyRight, active, disabled, className, width, left, dataTooltipContent, }) => {
     const [showTooltip, setShowTooltip] = (0, react_1.useState)(false);
-    return (react_1.default.createElement("div", { onMouseEnter: () => setShowTooltip(true), onMouseLeave: () => setShowTooltip(false), className: (0, classnames_1.default)('dsg-cell', gutter && 'dsg-cell-gutter', disabled && 'dsg-cell-disabled', gutter && active && 'dsg-cell-gutter-active', stickyRight && 'dsg-cell-sticky-right', className), style: {
+    const [hoverTimeout, setHoverTimeout] = (0, react_1.useState)(null);
+    const handleMouseEnter = () => {
+        const timeoutId = setTimeout(() => {
+            setShowTooltip(true);
+        }, 400);
+        setHoverTimeout(timeoutId);
+    };
+    const handleMouseLeave = () => {
+        clearTimeout(hoverTimeout); // タイマーをキャンセル
+        setShowTooltip(false);
+    };
+    (0, react_1.useEffect)(() => {
+        return () => {
+            // コンポーネントがアンマウントされるときにタイマーをクリア
+            if (hoverTimeout) {
+                clearTimeout(hoverTimeout);
+            }
+        };
+    }, [hoverTimeout]);
+    return (react_1.default.createElement("div", { onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave, className: (0, classnames_1.default)('dsg-cell', gutter && 'dsg-cell-gutter', disabled && 'dsg-cell-disabled', gutter && active && 'dsg-cell-gutter-active', stickyRight && 'dsg-cell-sticky-right', className), style: {
             width,
             left: stickyRight ? undefined : left,
         } },

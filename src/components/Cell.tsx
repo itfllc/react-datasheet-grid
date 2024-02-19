@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cx from 'classnames'
 
 export const Cell: FC<{
@@ -23,10 +23,33 @@ export const Cell: FC<{
   dataTooltipContent,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState<any | null>(null);
+
+  const handleMouseEnter = () => {
+    const timeoutId = setTimeout(() => {
+      setShowTooltip(true);
+    }, 400);
+    setHoverTimeout(timeoutId);
+  };
+
+  const handleMouseLeave = () => {
+    clearTimeout(hoverTimeout); // タイマーをキャンセル
+    setShowTooltip(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      // コンポーネントがアンマウントされるときにタイマーをクリア
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+    };
+  }, [hoverTimeout]);
+
   return (
     <div
-      onMouseEnter={() => setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={cx(
         'dsg-cell',
         gutter && 'dsg-cell-gutter',
