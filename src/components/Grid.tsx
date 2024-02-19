@@ -235,9 +235,9 @@ export const Grid = <T extends any>({
                   activeCell.col === col.index - 1
                 
                 //  errors[col.index]がなければundefinedを返す
+                let displayValidationError: string = "";
                 const cellErrorMessages = errors[col.index] ?? undefined;
                 const isGutter = col.index === 0;
-                let displayValidationError: string = "";
                 if (isGutter) {
                   Object.keys(errors).forEach((key) => {
                     displayValidationError += errors[key as any].join("\n");

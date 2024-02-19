@@ -147,9 +147,9 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                     const cellIsActive = (activeCell === null || activeCell === void 0 ? void 0 : activeCell.row) === row.index &&
                         activeCell.col === col.index - 1;
                     //  errors[col.index]がなければundefinedを返す
+                    let displayValidationError = "";
                     const cellErrorMessages = (_a = errors[col.index]) !== null && _a !== void 0 ? _a : undefined;
                     const isGutter = col.index === 0;
-                    let displayValidationError = "";
                     if (isGutter) {
                         Object.keys(errors).forEach((key) => {
                             displayValidationError += errors[key].join("\n");
