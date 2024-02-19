@@ -601,3 +601,16 @@
   position: absolute;
   z-index: 23;
 }
+
+.custom-tooltip {
+  position: absolute;
+  z-index: 100;
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  top: -100%;
+  transform: translateX(-50%);
+  white-space: pre-wrap;
+  width: max-content;
+}

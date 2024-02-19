@@ -32,7 +32,6 @@ const react_1 = __importStar(require("react"));
 const classnames_1 = __importDefault(require("classnames"));
 const Cell_1 = require("./Cell");
 const useMemoizedIndexCallback_1 = require("../hooks/useMemoizedIndexCallback");
-const react_tooltip_1 = require("react-tooltip");
 require("react-tooltip/dist/react-tooltip.css");
 const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightColumn, displayHeight, headerRowHeight, rowHeight, rowKey, fullWidth, selection, activeCell, rowClassName, cellClassName, children, editing, getContextMenuItems, setRowData, deleteRows, duplicateRows, insertRowAfter, stopEditing, onScroll, }) => {
     var _a, _b, _c, _d;
@@ -170,9 +169,8 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                                 rowIndex: row.index,
                                 columnId: columns[col.index].id,
                             })
-                            : cellClassName, displayValidationError ? (isGutter ? 'gutter-error-cell' : 'error-cell') : ''), width: col.size, left: col.start, dataTooltipId: "display-react-tooltip", dataTooltipContent: displayValidationError },
-                        react_1.default.createElement(Component, { rowData: data[row.index], getContextMenuItems: getContextMenuItems, disabled: cellDisabled, active: cellIsActive, columnIndex: col.index - 1, rowIndex: row.index, focus: cellIsActive && editing, deleteRow: deleteGivenRow(row.index), duplicateRow: duplicateGivenRow(row.index), stopEditing: stopEditing, insertRowBelow: insertAfterGivenRow(row.index), setRowData: setGivenRowData(row.index), columnData: columns[col.index].columnData }),
-                        displayValidationError && react_1.default.createElement(react_tooltip_1.Tooltip, { id: "display-react-tooltip", style: { backgroundColor: "red", color: "white" } })));
+                            : cellClassName, displayValidationError ? (isGutter ? 'gutter-error-cell' : 'error-cell') : ''), width: col.size, left: col.start, dataTooltipContent: displayValidationError },
+                        react_1.default.createElement(Component, { rowData: data[row.index], getContextMenuItems: getContextMenuItems, disabled: cellDisabled, active: cellIsActive, columnIndex: col.index - 1, rowIndex: row.index, focus: cellIsActive && editing, deleteRow: deleteGivenRow(row.index), duplicateRow: duplicateGivenRow(row.index), stopEditing: stopEditing, insertRowBelow: insertAfterGivenRow(row.index), setRowData: setGivenRowData(row.index), columnData: columns[col.index].columnData })));
                 })));
             }),
             children)));

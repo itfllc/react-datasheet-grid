@@ -9,6 +9,5 @@ export declare const Cell: FC<{
     width: number;
     left: number;
     dataTooltipContent?: string;
-    dataTooltipId?: string;
 }>;
 //# sourceMappingURL=Cell.d.ts.map

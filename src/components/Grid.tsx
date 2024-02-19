@@ -10,7 +10,6 @@ import {
 import cx from 'classnames'
 import { Cell as CellComponent } from './Cell'
 import { useMemoizedIndexCallback } from '../hooks/useMemoizedIndexCallback'
-import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 
 export const Grid = <T extends any>({
@@ -274,7 +273,6 @@ export const Grid = <T extends any>({
                       )}
                       width={col.size}
                       left={col.start}
-                      dataTooltipId="display-react-tooltip"
                       dataTooltipContent={displayValidationError}
                     >
                       <Component
@@ -292,9 +290,6 @@ export const Grid = <T extends any>({
                         setRowData={setGivenRowData(row.index)}
                         columnData={columns[col.index].columnData}
                       />
-                      {
-                        displayValidationError && <Tooltip id="display-react-tooltip" style={{ backgroundColor: "red", color: "white" }} />
-                      }
                       
                     </CellComponent>
                 )

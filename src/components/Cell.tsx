@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import cx from 'classnames'
 
 export const Cell: FC<{
@@ -11,7 +11,6 @@ export const Cell: FC<{
   width: number
   left: number
   dataTooltipContent?: string
-  dataTooltipId?: string
 }> = ({
   children,
   gutter,
@@ -22,10 +21,12 @@ export const Cell: FC<{
   width,
   left,
   dataTooltipContent,
-  dataTooltipId
 }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
   return (
     <div
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
       className={cx(
         'dsg-cell',
         gutter && 'dsg-cell-gutter',
@@ -38,10 +39,13 @@ export const Cell: FC<{
         width,
         left: stickyRight ? undefined : left,
       }}
-      data-tooltip-content={dataTooltipContent}
-      data-tooltip-id={dataTooltipId}
     >
       {children}
+      {showTooltip && dataTooltipContent && (
+        <div className="custom-tooltip" style={{ left: gutter ? "110%" : "50%", transform: gutter ? "translateY(-50%)" : "translateX(-50%)", top: gutter ? "50%" : "110%"}}>
+          {dataTooltipContent}
+        </div>
+      )}
     </div>
   )
 }
