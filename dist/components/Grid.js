@@ -172,7 +172,7 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                             })
                             : cellClassName, displayValidationError ? (isGutter ? 'gutter-error-cell' : 'error-cell') : ''), width: col.size, left: col.start, dataTooltipId: "display-react-tooltip", dataTooltipContent: displayValidationError },
                         react_1.default.createElement(Component, { rowData: data[row.index], getContextMenuItems: getContextMenuItems, disabled: cellDisabled, active: cellIsActive, columnIndex: col.index - 1, rowIndex: row.index, focus: cellIsActive && editing, deleteRow: deleteGivenRow(row.index), duplicateRow: duplicateGivenRow(row.index), stopEditing: stopEditing, insertRowBelow: insertAfterGivenRow(row.index), setRowData: setGivenRowData(row.index), columnData: columns[col.index].columnData }),
-                        react_1.default.createElement(react_tooltip_1.Tooltip, { id: "display-react-tooltip", style: { backgroundColor: "red", color: "white" } })));
+                        displayValidationError && react_1.default.createElement(react_tooltip_1.Tooltip, { id: "display-react-tooltip", style: { backgroundColor: "red", color: "white" } })));
                 })));
             }),
             children)));
