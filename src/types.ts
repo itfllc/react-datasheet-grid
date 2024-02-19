@@ -58,9 +58,10 @@ export type Column<T, C, PasteValue> = {
    * バリデーション関数を追加する
    * リターンでエラーメッセージを返す
    * 
-   * @param rowData
+   * @param rowData 行データ
+   * @param datas 全データ
    */
-  validators?: ((rowData: T) => string | undefined)[]
+  validators?: ((rowData: T, datas: T[]) => string | undefined)[]
 }
 
 export type SelectionContextType = {
