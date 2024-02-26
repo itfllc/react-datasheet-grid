@@ -3,49 +3,68 @@ import { CellComponent, Column } from '../types'
 
 type ColumnData = { key: string; original: Partial<Column<any, any, any>> }
 
+// 深い階層の値を設定するヘルパー関数
+const setValueAtPath = (obj: any, path: string, value: any): void => {
+  const parts = path.split('.');
+  let current = obj;
+  for (let i = 0; i < parts.length - 1; i++) {
+    const part = parts[i];
+    if (!current[part] || typeof current[part] !== 'object') {
+      current[part] = {}; // 存在しない中間パスをオブジェクトとして作成
+    }
+    current = current[part];
+  }
+  current[parts[parts.length - 1]] = value;
+};
+
+const getValueAtPath = (data: any, path: string): any => {
+  return path.split('.').reduce((acc, part) => acc && acc[part], data);
+};
+
 const KeyComponent: CellComponent<any, ColumnData> = ({
   columnData: { key, original },
   rowData,
   setRowData,
   ...rest
 }) => {
-  // We use a ref so useCallback does not produce a new setKeyData function every time the rowData changes
-  const rowDataRef = useRef(rowData)
-  rowDataRef.current = rowData
+  const rowDataRef = useRef(rowData);
+  rowDataRef.current = rowData;
 
-  // We wrap the setRowData function to assign the value to the desired key
   const setKeyData = useCallback(
     (value: any) => {
-      setRowData({ ...rowDataRef.current, [key]: value })
+      // rowDataのコピーを作成
+      const newData = { ...rowDataRef.current };
+      // 指定されたパスに値を設定
+      setValueAtPath(newData, key, value);
+      // 更新されたデータで行データを設定
+      setRowData(newData);
     },
     [key, setRowData]
-  )
+  );
 
   if (!original.component) {
-    return <></>
+    return <></>;
   }
 
-  const Component = original.component
+  const Component = original.component;
 
   return (
     <Component
       columnData={original.columnData}
       setRowData={setKeyData}
-      // We only pass the value of the desired key, this is why each cell does not have to re-render everytime
-      // another cell in the same row changes!
-      rowData={rowData[key]}
+      // ドット記法のキーを使って、深い階層のデータ値を取得
+      rowData={getValueAtPath(rowData, key)}
       {...rest}
     />
-  )
-}
+  );
+};
 
 export const keyColumn = <
   T extends Record<string, any>,
-  K extends keyof T = keyof T,
   PasteValue = string
 >(
-  key: K,
-  column: Partial<Column<T[K], any, PasteValue>>
+  key: string,
+  column: Partial<Column<any, any, PasteValue>>
 ): Partial<Column<T, ColumnData, PasteValue>> => ({
   id: key as string,
   ...column,
