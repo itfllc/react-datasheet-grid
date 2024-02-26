@@ -36,23 +36,42 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.keyColumn = void 0;
 const react_1 = __importStar(require("react"));
+// 深い階層の値を設定するヘルパー関数
+const setValueAtPath = (obj, path, value) => {
+    const parts = path.split('.');
+    let current = obj;
+    for (let i = 0; i < parts.length - 1; i++) {
+        const part = parts[i];
+        if (!current[part] || typeof current[part] !== 'object') {
+            current[part] = {}; // 存在しない中間パスをオブジェクトとして作成
+        }
+        current = current[part];
+    }
+    current[parts[parts.length - 1]] = value;
+};
+const getValueAtPath = (data, path) => {
+    // accがundefinedの場合はそこで終了
+    return path.split('.').reduce((acc, part) => acc && acc[part], data);
+};
 const KeyComponent = (_a) => {
     var { columnData: { key, original }, rowData, setRowData } = _a, rest = __rest(_a, ["columnData", "rowData", "setRowData"]);
-    // We use a ref so useCallback does not produce a new setKeyData function every time the rowData changes
     const rowDataRef = (0, react_1.useRef)(rowData);
     rowDataRef.current = rowData;
-    // We wrap the setRowData function to assign the value to the desired key
     const setKeyData = (0, react_1.useCallback)((value) => {
-        setRowData(Object.assign(Object.assign({}, rowDataRef.current), { [key]: value }));
+        // rowDataのコピーを作成
+        const newData = Object.assign({}, rowDataRef.current);
+        // 指定されたパスに値を設定
+        setValueAtPath(newData, key, value);
+        // 更新されたデータで行データを設定
+        setRowData(newData);
     }, [key, setRowData]);
     if (!original.component) {
         return react_1.default.createElement(react_1.default.Fragment, null);
     }
     const Component = original.component;
     return (react_1.default.createElement(Component, Object.assign({ columnData: original.columnData, setRowData: setKeyData, 
-        // We only pass the value of the desired key, this is why each cell does not have to re-render everytime
-        // another cell in the same row changes!
-        rowData: rowData[key] }, rest)));
+        // ドット記法のキーを使って、深い階層のデータ値を取得
+        rowData: getValueAtPath(rowData, key) }, rest)));
 };
 const keyColumn = (key, column) => (Object.assign(Object.assign({ id: key }, column), { 
     // We pass the key and the original column as columnData to be able to retrieve them in the cell component

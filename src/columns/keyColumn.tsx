@@ -18,6 +18,7 @@ const setValueAtPath = (obj: any, path: string, value: any): void => {
 };
 
 const getValueAtPath = (data: any, path: string): any => {
+  // accがundefinedの場合はそこで終了
   return path.split('.').reduce((acc, part) => acc && acc[part], data);
 };
 
