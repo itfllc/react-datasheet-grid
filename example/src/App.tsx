@@ -15,6 +15,8 @@ type Row = {
   test?: {
     data: string
   }
+  arrayTestNest1: { data: string }[]
+  arrayTestNest2: { data: string }[][]
 }
 
 function App() {
@@ -24,6 +26,23 @@ function App() {
       firstName: `First ${i}`,
       lastName: `Last ${i}`,
       test: { data: `test ${i}` },
+      arrayTestNest1: [
+        { data: "data1" },
+        { data: "data2" },
+        { data: "data3" },
+      ],
+      arrayTestNest2: [
+        [
+          { data: "data1" },
+          { data: "data2" },
+          { data: "data3" },
+        ],
+        [
+          { data: "data1" },
+          { data: "data2" },
+          { data: "data3" },
+        ]
+      ],
     })),
   ]);
 
@@ -59,6 +78,21 @@ function App() {
       title: 'Test',
       grow: 2,
     },
+    ...Array.from({ length: 3 }, (_, i) => ({
+      ...keyColumn<Row>(`arrayTestNest1.${i}.data`, textColumn),
+      title: `Array Test Nest1 ${i}`,
+      grow: 2,
+    })),
+    ...Array.from({ length: 3 }, (_, i) => ({
+      ...keyColumn<Row>(`arrayTestNest1[${i}].data`, textColumn),
+      title: `Array Test Nest1 ${i}`,
+      grow: 2,
+    })),
+    ...Array.from({ length: 3 }, (_, i) => ({
+      ...keyColumn<Row>(`arrayTestNest2.${i}.${i}.data`, textColumn),
+      title: `Array Test Nest2 ${i}`,
+      grow: 2,
+    })),
   ]
 
   return (

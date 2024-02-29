@@ -5,10 +5,13 @@ type ColumnData = { key: string; original: Partial<Column<any, any, any>> }
 
 // 深い階層の値を設定するヘルパー関数
 const setValueAtPath = (obj: any, path: string, value: any): void => {
-  const parts = path.split('.');
+  // ドット記法とブラケット記法の両方をサポートするようにパスを分割
+  const parts = path.split(/\.|\[|\].?/).filter(Boolean);
   let current = obj;
   for (let i = 0; i < parts.length - 1; i++) {
-    const part = parts[i];
+    let part: string | number = parts[i];
+    // 配列のインデックスである場合、数値に変換
+    if (part.match(/^\d+$/)) part = parseInt(part, 10);
     if (!current[part] || typeof current[part] !== 'object') {
       current[part] = {}; // 存在しない中間パスをオブジェクトとして作成
     }
@@ -18,8 +21,14 @@ const setValueAtPath = (obj: any, path: string, value: any): void => {
 };
 
 const getValueAtPath = (data: any, path: string): any => {
-  // accがundefinedの場合はそこで終了
-  return path.split('.').reduce((acc, part) => acc && acc[part], data);
+  // ドット記法とブラケット記法の両方をサポートするようにパスを分割
+  const parts = path.split(/\.|\[|\].?/).filter(Boolean);
+  return parts.reduce((acc, part: string) => {
+    let partOfStrOrNum: string | number = part
+    // 配列のインデックスである場合、数値に変換してからアクセス
+    if (part.match(/^\d+$/)) partOfStrOrNum = parseInt(part, 10);
+    return acc && acc[partOfStrOrNum];
+  }, data);
 };
 
 const KeyComponent: CellComponent<any, ColumnData> = ({

@@ -38,10 +38,14 @@ exports.keyColumn = void 0;
 const react_1 = __importStar(require("react"));
 // 深い階層の値を設定するヘルパー関数
 const setValueAtPath = (obj, path, value) => {
-    const parts = path.split('.');
+    // ドット記法とブラケット記法の両方をサポートするようにパスを分割
+    const parts = path.split(/\.|\[|\].?/).filter(Boolean);
     let current = obj;
     for (let i = 0; i < parts.length - 1; i++) {
-        const part = parts[i];
+        let part = parts[i];
+        // 配列のインデックスである場合、数値に変換
+        if (part.match(/^\d+$/))
+            part = parseInt(part, 10);
         if (!current[part] || typeof current[part] !== 'object') {
             current[part] = {}; // 存在しない中間パスをオブジェクトとして作成
         }
@@ -50,8 +54,15 @@ const setValueAtPath = (obj, path, value) => {
     current[parts[parts.length - 1]] = value;
 };
 const getValueAtPath = (data, path) => {
-    // accがundefinedの場合はそこで終了
-    return path.split('.').reduce((acc, part) => acc && acc[part], data);
+    // ドット記法とブラケット記法の両方をサポートするようにパスを分割
+    const parts = path.split(/\.|\[|\].?/).filter(Boolean);
+    return parts.reduce((acc, part) => {
+        let partOfStrOrNum = part;
+        // 配列のインデックスである場合、数値に変換してからアクセス
+        if (part.match(/^\d+$/))
+            partOfStrOrNum = parseInt(part, 10);
+        return acc && acc[partOfStrOrNum];
+    }, data);
 };
 const KeyComponent = (_a) => {
     var { columnData: { key, original }, rowData, setRowData } = _a, rest = __rest(_a, ["columnData", "rowData", "setRowData"]);
