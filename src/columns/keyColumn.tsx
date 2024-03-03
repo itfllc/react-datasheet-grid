@@ -21,6 +21,9 @@ const setValueAtPath = (obj: any, path: string, value: any): void => {
 };
 
 const getValueAtPath = (data: any, path: string): any => {
+  if (!path ) {
+    return undefined;
+  }
   // ドット記法とブラケット記法の両方をサポートするようにパスを分割
   const parts = path.split(/\.|\[|\].?/).filter(Boolean);
   return parts.reduce((acc, part: string) => {

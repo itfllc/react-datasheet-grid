@@ -54,6 +54,9 @@ const setValueAtPath = (obj, path, value) => {
     current[parts[parts.length - 1]] = value;
 };
 const getValueAtPath = (data, path) => {
+    if (!path) {
+        return undefined;
+    }
     // ドット記法とブラケット記法の両方をサポートするようにパスを分割
     const parts = path.split(/\.|\[|\].?/).filter(Boolean);
     return parts.reduce((acc, part) => {
