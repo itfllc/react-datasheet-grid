@@ -187,7 +187,7 @@ export const Grid = <T extends any>({
             if (validators && validators.length > 0) {
               const errorMessages: string[] = [];
               validators.forEach((validator) => {
-                const validationResult = validator(data[row.index], data);
+                const validationResult = validator(data[row.index], data, row.index, col.index);
                 if (validationResult) {
                   errorMessages.push(validationResult);
                 }

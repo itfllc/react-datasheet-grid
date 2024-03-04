@@ -61,7 +61,7 @@ export type Column<T, C, PasteValue> = {
    * @param rowData 行データ
    * @param datas 全データ
    */
-  validators?: ((rowData: T, datas: T[]) => string | undefined)[]
+  validators?: ((rowData: T, datas: T[], rowIndex: number, columnIndex: number) => string | undefined)[]
 }
 
 export type SelectionContextType = {

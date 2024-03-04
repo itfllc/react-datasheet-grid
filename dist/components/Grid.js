@@ -112,7 +112,7 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                     if (validators && validators.length > 0) {
                         const errorMessages = [];
                         validators.forEach((validator) => {
-                            const validationResult = validator(data[row.index], data);
+                            const validationResult = validator(data[row.index], data, row.index, col.index);
                             if (validationResult) {
                                 errorMessages.push(validationResult);
                             }
