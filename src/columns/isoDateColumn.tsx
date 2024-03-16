@@ -53,6 +53,7 @@ export const isoDateColumn: Partial<Column<string | null, any, string>> = {
     const date = new Date(value.replace(/\.\s?|\//g, '-'))
     return isNaN(date.getTime()) ? null : date.toISOString().substr(0, 10)
   },
+  copyValue: ({ rowData }) => rowData ?? '',
   minWidth: 170,
   isCellEmpty: ({ rowData }) => !rowData,
 }

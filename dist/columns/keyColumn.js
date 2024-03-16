@@ -33,40 +33,14 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.keyColumn = void 0;
 const react_1 = __importStar(require("react"));
-// 深い階層の値を設定するヘルパー関数
-const setValueAtPath = (obj, path, value) => {
-    // ドット記法とブラケット記法の両方をサポートするようにパスを分割
-    const parts = path.split(/\.|\[|\].?/).filter(Boolean);
-    let current = obj;
-    for (let i = 0; i < parts.length - 1; i++) {
-        let part = parts[i];
-        // 配列のインデックスである場合、数値に変換
-        if (part.match(/^\d+$/))
-            part = parseInt(part, 10);
-        if (!current[part] || typeof current[part] !== 'object') {
-            current[part] = {}; // 存在しない中間パスをオブジェクトとして作成
-        }
-        current = current[part];
-    }
-    current[parts[parts.length - 1]] = value;
-};
-const getValueAtPath = (data, path) => {
-    if (!path) {
-        return undefined;
-    }
-    // ドット記法とブラケット記法の両方をサポートするようにパスを分割
-    const parts = path.split(/\.|\[|\].?/).filter(Boolean);
-    return parts.reduce((acc, part) => {
-        let partOfStrOrNum = part;
-        // 配列のインデックスである場合、数値に変換してからアクセス
-        if (part.match(/^\d+$/))
-            partOfStrOrNum = parseInt(part, 10);
-        return acc && acc[partOfStrOrNum];
-    }, data);
-};
+const getValueAtPath_1 = __importDefault(require("../utils/getValueAtPath"));
+const setValueAtPath_1 = __importDefault(require("../utils/setValueAtPath"));
 const KeyComponent = (_a) => {
     var { columnData: { key, original }, rowData, setRowData } = _a, rest = __rest(_a, ["columnData", "rowData", "setRowData"]);
     const rowDataRef = (0, react_1.useRef)(rowData);
@@ -75,7 +49,7 @@ const KeyComponent = (_a) => {
         // rowDataのコピーを作成
         const newData = Object.assign({}, rowDataRef.current);
         // 指定されたパスに値を設定
-        setValueAtPath(newData, key, value);
+        (0, setValueAtPath_1.default)(newData, key, value);
         // 更新されたデータで行データを設定
         setRowData(newData);
     }, [key, setRowData]);
@@ -85,32 +59,34 @@ const KeyComponent = (_a) => {
     const Component = original.component;
     return (react_1.default.createElement(Component, Object.assign({ columnData: original.columnData, setRowData: setKeyData, 
         // ドット記法のキーを使って、深い階層のデータ値を取得
-        rowData: getValueAtPath(rowData, key) }, rest)));
+        rowData: (0, getValueAtPath_1.default)(rowData, key) }, rest)));
 };
 const keyColumn = (key, column) => (Object.assign(Object.assign({ id: key }, column), { 
     // We pass the key and the original column as columnData to be able to retrieve them in the cell component
     columnData: { key: key, original: column }, component: KeyComponent, 
     // Here we simply wrap all functions to only pass the value of the desired key to the column, and not the entire row
-    copyValue: ({ rowData, rowIndex }) => { var _a, _b; return (_b = (_a = column.copyValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: rowData[key], rowIndex })) !== null && _b !== void 0 ? _b : null; }, deleteValue: ({ rowData, rowIndex }) => {
+    copyValue: ({ rowData, rowIndex }) => { var _a, _b; return (_b = (_a = column.copyValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex })) !== null && _b !== void 0 ? _b : null; }, deleteValue: ({ rowData, rowIndex }) => {
         var _a, _b;
-        return (Object.assign(Object.assign({}, rowData), { [key]: (_b = (_a = column.deleteValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: rowData[key], rowIndex })) !== null && _b !== void 0 ? _b : null }));
+        (0, setValueAtPath_1.default)(rowData, key, (_b = (_a = column.deleteValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData, rowIndex })) !== null && _b !== void 0 ? _b : null);
+        return Object.assign({}, rowData);
     }, pasteValue: ({ rowData, value, rowIndex }) => {
-        var _a, _b;
-        return (Object.assign(Object.assign({}, rowData), { [key]: (_b = (_a = column.pasteValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: rowData[key], value, rowIndex })) !== null && _b !== void 0 ? _b : null }));
+        var _a;
+        (0, setValueAtPath_1.default)(rowData, key, (_a = column.pasteValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: (0, getValueAtPath_1.default)(rowData, key), value, rowIndex }));
+        return Object.assign({}, rowData);
     }, disabled: typeof column.disabled === 'function'
         ? ({ rowData, rowIndex }) => {
             var _a;
             return typeof column.disabled === 'function'
-                ? column.disabled({ rowData: rowData[key], rowIndex })
+                ? column.disabled({ rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex })
                 : (_a = column.disabled) !== null && _a !== void 0 ? _a : false;
         }
         : column.disabled, cellClassName: typeof column.cellClassName === 'function'
         ? ({ rowData, rowIndex, columnId }) => {
             var _a;
             return typeof column.cellClassName === 'function'
-                ? column.cellClassName({ rowData: rowData[key], rowIndex, columnId })
+                ? column.cellClassName({ rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex, columnId })
                 : (_a = column.cellClassName) !== null && _a !== void 0 ? _a : undefined;
         }
-        : column.cellClassName, isCellEmpty: ({ rowData, rowIndex }) => { var _a, _b; return (_b = (_a = column.isCellEmpty) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: rowData[key], rowIndex })) !== null && _b !== void 0 ? _b : false; } }));
+        : column.cellClassName, isCellEmpty: ({ rowData, rowIndex }) => { var _a, _b; return (_b = (_a = column.isCellEmpty) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex })) !== null && _b !== void 0 ? _b : false; } }));
 exports.keyColumn = keyColumn;
 //# sourceMappingURL=keyColumn.js.map

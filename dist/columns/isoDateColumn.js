@@ -67,6 +67,7 @@ exports.isoDateColumn = {
         const date = new Date(value.replace(/\.\s?|\//g, '-'));
         return isNaN(date.getTime()) ? null : date.toISOString().substr(0, 10);
     },
+    copyValue: ({ rowData }) => rowData !== null && rowData !== void 0 ? rowData : '',
     minWidth: 170,
     isCellEmpty: ({ rowData }) => !rowData,
 };
