@@ -28,6 +28,13 @@ function App() {
       ...keyColumn<any>('user.account', textColumn),
       title: 'ユーザーアカウント',
       minWidth: 200,
+      validators: [
+        (value) => {
+          if (!value?.user?.account) {
+            return 'アカウントが必要です'
+          }
+        },
+      ],
     },
     {
       ...keyColumn<any>('user.name', textColumn),

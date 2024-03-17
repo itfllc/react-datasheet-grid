@@ -1,6 +1,6 @@
 {
   "name": "@itfllc/react-datasheet-grid",
-  "version": "4.11.4-0.0.5",
+  "version": "4.11.4-0.0.7",
   "description": "An Excel-like React component to create beautiful spreadsheets.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -61,6 +61,10 @@
     "react": "^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.12",
+    "@mui/material": "^5.15.13",
     "@tanstack/react-virtual": "^3.0.0-beta.18",
     "classnames": "^2.3.1",
     "fast-deep-equal": "^3.1.3",
