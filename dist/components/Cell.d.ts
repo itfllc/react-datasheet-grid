@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { TooltipProps } from '@mui/material';
 export declare const Cell: FC<{
     gutter: boolean;
     stickyRight: boolean;
@@ -9,5 +10,6 @@ export declare const Cell: FC<{
     width: number;
     left: number;
     dataTooltipContent?: string;
+    errorPlacement?: TooltipProps['placement'];
 }>;
 //# sourceMappingURL=Cell.d.ts.map

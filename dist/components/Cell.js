@@ -32,8 +32,8 @@ const ErrorTooltip = (0, material_1.styled)((_a) => {
         color: theme.palette.error.main,
     },
 }));
-const Cell = ({ children, gutter, stickyRight, active, disabled, className, width, left, dataTooltipContent, }) => {
-    return (react_1.default.createElement(ErrorTooltip, { title: dataTooltipContent, arrow: true },
+const Cell = ({ children, gutter, stickyRight, active, disabled, className, width, left, dataTooltipContent, errorPlacement, }) => {
+    return (react_1.default.createElement(ErrorTooltip, { title: dataTooltipContent, placement: errorPlacement, arrow: true },
         react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-cell', gutter && 'dsg-cell-gutter', disabled && 'dsg-cell-disabled', gutter && active && 'dsg-cell-gutter-active', stickyRight && 'dsg-cell-sticky-right', className), style: {
                 width,
                 left: stickyRight ? undefined : left,

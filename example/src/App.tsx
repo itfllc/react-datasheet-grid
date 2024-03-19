@@ -35,12 +35,12 @@ function App() {
           }
         },
       ],
+    //   errorPlacement: 'right',
     },
     {
       ...keyColumn<any>('user.name', textColumn),
       title: 'ユーザー名',
       minWidth: 200,
-      disabled: true,
     },
     {
         ...keyColumn<any>('test.date', isoDateColumn),

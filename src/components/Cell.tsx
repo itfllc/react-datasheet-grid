@@ -26,6 +26,7 @@ export const Cell: FC<{
   width: number
   left: number
   dataTooltipContent?: string
+  errorPlacement?: TooltipProps['placement']
 }> = ({
   children,
   gutter,
@@ -36,9 +37,10 @@ export const Cell: FC<{
   width,
   left,
   dataTooltipContent,
+  errorPlacement,
 }) => {
   return (
-    <ErrorTooltip title={dataTooltipContent} arrow>
+    <ErrorTooltip title={dataTooltipContent} placement={errorPlacement} arrow>
       <div
         className={cx(
           'dsg-cell',

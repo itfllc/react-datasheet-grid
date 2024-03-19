@@ -1,3 +1,4 @@
+import { TooltipProps } from '@mui/material/Tooltip/Tooltip'
 import React from 'react'
 
 export type Cell = {
@@ -62,6 +63,13 @@ export type Column<T, C, PasteValue> = {
    * @param datas 全データ
    */
   validators?: ((rowData: T, datas: T[], rowIndex: number, columnIndex: number) => string | undefined)[]
+  /**
+   * 追加実装
+   * エラーメッセージの表示場所を指定する
+   * 
+   * @param placement 表示場所
+   */
+  errorPlacement?: TooltipProps["placement"]
 }
 
 export type SelectionContextType = {

@@ -276,6 +276,7 @@ export const Grid = <T extends any>({
                       width={col.size}
                       left={col.start}
                       dataTooltipContent={displayValidationError}
+                      errorPlacement={columns[col.index].errorPlacement}
                     >
                       <Component
                         rowData={data[row.index]}
