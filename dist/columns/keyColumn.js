@@ -74,10 +74,10 @@ const keyColumn = (key, column) => (Object.assign(Object.assign({ id: key }, col
         (0, setValueAtPath_1.default)(rowData, key, (_a = column.pasteValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: (0, getValueAtPath_1.default)(rowData, key), value, rowIndex }));
         return Object.assign({}, rowData);
     }, disabled: typeof column.disabled === 'function'
-        ? ({ rowData, rowIndex }) => {
+        ? ({ rowData, datas, rowIndex }) => {
             var _a;
             return typeof column.disabled === 'function'
-                ? column.disabled({ rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex })
+                ? column.disabled({ rowData: (0, getValueAtPath_1.default)(rowData, key), datas, rowIndex })
                 : (_a = column.disabled) !== null && _a !== void 0 ? _a : false;
         }
         : column.disabled, cellClassName: typeof column.cellClassName === 'function'

@@ -292,6 +292,7 @@ export const DataSheetGrid = React.memo(
             typeof disabled === 'function'
               ? disabled({
                   rowData: dataRef.current[cell.row],
+                  datas: dataRef.current,
                   rowIndex: cell.row,
                 })
               : disabled

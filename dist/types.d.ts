@@ -41,6 +41,7 @@ export type Column<T, C, PasteValue> = {
     disableKeys: boolean;
     disabled: boolean | ((opt: {
         rowData: T;
+        datas: T[];
         rowIndex: number;
     }) => boolean);
     cellClassName?: string | ((opt: {

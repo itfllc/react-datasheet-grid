@@ -140,6 +140,7 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                         (typeof disabled === 'function' &&
                             disabled({
                                 rowData: data[row.index],
+                                datas: data,
                                 rowIndex: row.index,
                             }));
                     const cellIsActive = (activeCell === null || activeCell === void 0 ? void 0 : activeCell.row) === row.index &&

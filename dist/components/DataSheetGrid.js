@@ -191,6 +191,7 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
         return Boolean(typeof disabled === 'function'
             ? disabled({
                 rowData: dataRef.current[cell.row],
+                datas: dataRef.current,
                 rowIndex: cell.row,
             })
             : disabled);

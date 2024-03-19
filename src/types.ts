@@ -39,7 +39,7 @@ export type Column<T, C, PasteValue> = {
   component: CellComponent<T, C>
   columnData?: C
   disableKeys: boolean
-  disabled: boolean | ((opt: { rowData: T; rowIndex: number }) => boolean)
+  disabled: boolean | ((opt: { rowData: T; datas: T[]; rowIndex: number }) => boolean)
   cellClassName?:
     | string
     | ((opt: {

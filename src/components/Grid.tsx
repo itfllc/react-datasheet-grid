@@ -226,6 +226,7 @@ export const Grid = <T extends any>({
                   (typeof disabled === 'function' &&
                     disabled({
                       rowData: data[row.index],
+                      datas: data,
                       rowIndex: row.index,
                     }))
                 const cellIsActive =

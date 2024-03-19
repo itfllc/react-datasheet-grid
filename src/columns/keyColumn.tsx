@@ -71,9 +71,9 @@ export const keyColumn = <
   }},
   disabled:
     typeof column.disabled === 'function'
-      ? ({ rowData, rowIndex }: any) => {
+      ? ({ rowData, datas, rowIndex }: any) => {
           return typeof column.disabled === 'function'
-            ? column.disabled({ rowData: getValueAtPath(rowData, key), rowIndex })
+            ? column.disabled({ rowData: getValueAtPath(rowData, key), datas, rowIndex })
             : column.disabled ?? false
         }
       : column.disabled,
