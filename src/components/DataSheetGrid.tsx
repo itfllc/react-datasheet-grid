@@ -1471,7 +1471,8 @@ export const DataSheetGrid = React.memo(
             }
           } else if (['Backspace', 'Delete'].includes(event.key)) {
             if (!editing) {
-              deleteSelection()
+              // 変更: Backspace, Delete キーでセルの内容を削除する際にonChangeに通知していなかったのを通知するように変更
+              deleteSelection(false)
               event.preventDefault()
             }
           } else if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {

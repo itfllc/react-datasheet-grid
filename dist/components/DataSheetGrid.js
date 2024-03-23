@@ -1066,7 +1066,8 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
         }
         else if (['Backspace', 'Delete'].includes(event.key)) {
             if (!editing) {
-                deleteSelection();
+                // 変更: Backspace, Delete キーでセルの内容を削除する際にonChangeに通知していなかったのを通知するように変更
+                deleteSelection(false);
                 event.preventDefault();
             }
         }
