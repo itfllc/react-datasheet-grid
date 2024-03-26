@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import cx from 'classnames'
 import Tooltip from '@mui/material/Tooltip/Tooltip'
-import { TooltipProps, styled, tooltipClasses } from '@mui/material';
+import { TooltipProps, styled, tooltipClasses } from '@mui/material'
 
 const ErrorTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -14,7 +14,7 @@ const ErrorTooltip = styled(({ className, ...props }: TooltipProps) => (
   [`& .${tooltipClasses.arrow}`]: {
     color: theme.palette.error.main,
   },
-}));
+}))
 
 export const Cell: FC<{
   gutter: boolean

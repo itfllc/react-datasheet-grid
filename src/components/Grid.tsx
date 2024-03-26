@@ -181,22 +181,27 @@ export const Grid = <T extends any>({
           // 各行ごとにエラーを保存
           const errors: {
             [key: number]: string[]
-          } = {};
+          } = {}
           colVirtualizer.getVirtualItems().forEach((col) => {
-            const validators = columns[col.index].validators;
+            const validators = columns[col.index].validators
             if (validators && validators.length > 0) {
-              const errorMessages: string[] = [];
+              const errorMessages: string[] = []
               validators.forEach((validator) => {
-                const validationResult = validator(data[row.index], data, row.index, col.index);
+                const validationResult = validator(
+                  data[row.index],
+                  data,
+                  row.index,
+                  col.index
+                )
                 if (validationResult) {
-                  errorMessages.push(validationResult);
+                  errorMessages.push(validationResult)
                 }
-              });
+              })
               if (errorMessages.length > 0) {
-                errors[col.index] = errorMessages;
+                errors[col.index] = errorMessages
               }
             }
-          });
+          })
 
           return (
             <div
@@ -232,69 +237,72 @@ export const Grid = <T extends any>({
                 const cellIsActive =
                   activeCell?.row === row.index &&
                   activeCell.col === col.index - 1
-                
+
                 //  errors[col.index]がなければundefinedを返す
-                let displayValidationError: string = "";
-                const cellErrorMessages = errors[col.index] ?? undefined;
-                const isGutter = col.index === 0;
+                let displayValidationError: string = ''
+                const cellErrorMessages = errors[col.index] ?? undefined
+                const isGutter = col.index === 0
                 if (isGutter) {
-                  const displayErrors: string[] = [];
+                  const displayErrors: string[] = []
                   Object.keys(errors).forEach((key) => {
-                    displayErrors.push(errors[key as any].join("\n"));
-                  });
-                  displayValidationError = displayErrors.join("\n");
+                    displayErrors.push(errors[key as any].join('\n'))
+                  })
+                  displayValidationError = displayErrors.join('\n')
                 } else {
-                  displayValidationError = cellErrorMessages?.join("\n");
+                  displayValidationError = cellErrorMessages?.join('\n')
                 }
-           
+
                 return (
-                    <CellComponent
-                      key={col.key}
-                      gutter={isGutter}
-                      stickyRight={
-                        hasStickyRightColumn && col.index === columns.length - 1
-                      }
-                      active={isGutter && rowActive}
+                  <CellComponent
+                    key={col.key}
+                    gutter={isGutter}
+                    stickyRight={
+                      hasStickyRightColumn && col.index === columns.length - 1
+                    }
+                    active={isGutter && rowActive}
+                    disabled={cellDisabled}
+                    className={cx(
+                      typeof colCellClassName === 'function'
+                        ? colCellClassName({
+                            rowData: data[row.index],
+                            rowIndex: row.index,
+                            columnId: columns[col.index].id,
+                          })
+                        : colCellClassName,
+                      typeof cellClassName === 'function'
+                        ? cellClassName({
+                            rowData: data[row.index],
+                            rowIndex: row.index,
+                            columnId: columns[col.index].id,
+                          })
+                        : cellClassName,
+                      displayValidationError
+                        ? isGutter
+                          ? 'gutter-error-cell'
+                          : 'error-cell'
+                        : ''
+                    )}
+                    width={col.size}
+                    left={col.start}
+                    dataTooltipContent={displayValidationError}
+                    errorPlacement={columns[col.index].errorPlacement}
+                  >
+                    <Component
+                      rowData={data[row.index]}
+                      getContextMenuItems={getContextMenuItems}
                       disabled={cellDisabled}
-                      className={cx(
-                        typeof colCellClassName === 'function'
-                          ? colCellClassName({
-                              rowData: data[row.index],
-                              rowIndex: row.index,
-                              columnId: columns[col.index].id,
-                            })
-                          : colCellClassName,
-                        typeof cellClassName === 'function'
-                          ? cellClassName({
-                              rowData: data[row.index],
-                              rowIndex: row.index,
-                              columnId: columns[col.index].id,
-                            })
-                          : cellClassName,
-                        displayValidationError ? (isGutter ? 'gutter-error-cell' : 'error-cell') : ''
-                      )}
-                      width={col.size}
-                      left={col.start}
-                      dataTooltipContent={displayValidationError}
-                      errorPlacement={columns[col.index].errorPlacement}
-                    >
-                      <Component
-                        rowData={data[row.index]}
-                        getContextMenuItems={getContextMenuItems}
-                        disabled={cellDisabled}
-                        active={cellIsActive}
-                        columnIndex={col.index - 1}
-                        rowIndex={row.index}
-                        focus={cellIsActive && editing}
-                        deleteRow={deleteGivenRow(row.index)}
-                        duplicateRow={duplicateGivenRow(row.index)}
-                        stopEditing={stopEditing}
-                        insertRowBelow={insertAfterGivenRow(row.index)}
-                        setRowData={setGivenRowData(row.index)}
-                        columnData={columns[col.index].columnData}
-                      />
-                      
-                    </CellComponent>
+                      active={cellIsActive}
+                      columnIndex={col.index - 1}
+                      rowIndex={row.index}
+                      focus={cellIsActive && editing}
+                      deleteRow={deleteGivenRow(row.index)}
+                      duplicateRow={duplicateGivenRow(row.index)}
+                      stopEditing={stopEditing}
+                      insertRowBelow={insertAfterGivenRow(row.index)}
+                      setRowData={setGivenRowData(row.index)}
+                      columnData={columns[col.index].columnData}
+                    />
+                  </CellComponent>
                 )
               })}
             </div>

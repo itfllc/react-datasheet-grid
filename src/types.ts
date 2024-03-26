@@ -40,7 +40,9 @@ export type Column<T, C, PasteValue> = {
   component: CellComponent<T, C>
   columnData?: C
   disableKeys: boolean
-  disabled: boolean | ((opt: { rowData: T; datas: T[]; rowIndex: number }) => boolean)
+  disabled:
+    | boolean
+    | ((opt: { rowData: T; datas: T[]; rowIndex: number }) => boolean)
   cellClassName?:
     | string
     | ((opt: {
@@ -58,18 +60,23 @@ export type Column<T, C, PasteValue> = {
    * 追加実装
    * バリデーション関数を追加する
    * リターンでエラーメッセージを返す
-   * 
+   *
    * @param rowData 行データ
    * @param datas 全データ
    */
-  validators?: ((rowData: T, datas: T[], rowIndex: number, columnIndex: number) => string | undefined)[]
+  validators?: ((
+    rowData: T,
+    datas: T[],
+    rowIndex: number,
+    columnIndex: number
+  ) => string | undefined)[]
   /**
    * 追加実装
    * エラーメッセージの表示場所を指定する
-   * 
+   *
    * @param placement 表示場所
    */
-  errorPlacement?: TooltipProps["placement"]
+  errorPlacement?: TooltipProps['placement']
 }
 
 export type SelectionContextType = {
@@ -110,7 +117,13 @@ export type AddRowsComponentProps = {
 
 export type ContextMenuItem =
   | {
-      type: 'INSERT_ROW_BELLOW' | 'DELETE_ROW' | 'DUPLICATE_ROW' | 'COPY' | 'CUT' | 'PASTE'
+      type:
+        | 'INSERT_ROW_BELLOW'
+        | 'DELETE_ROW'
+        | 'DUPLICATE_ROW'
+        | 'COPY'
+        | 'CUT'
+        | 'PASTE'
       action: () => void
     }
   | {
