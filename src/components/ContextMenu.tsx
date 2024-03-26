@@ -59,9 +59,10 @@ export const createContextMenuComponent =
     const onClickOutside = useCallback(
       (event: MouseEvent) => {
         const clickInside = containerRef.current?.contains(event.target as Node)
-        const clickBackdrop = (event.target as HTMLElement).className?.includes(
-          'MuiBackdrop-root'
-        )
+        const targetElem = event.target as HTMLElement
+        const clickBackdrop =
+          targetElem.className?.includes('MuiBackdrop-root') ||
+          targetElem.className?.includes('MuiList-root')
 
         if (!clickInside || clickBackdrop) {
           close()

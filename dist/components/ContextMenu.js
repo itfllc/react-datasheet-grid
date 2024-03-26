@@ -69,9 +69,11 @@ const createContextMenuComponent = (renderItem = exports.defaultRenderItem) =>
 ({ clientX, clientY, items, close }) => {
     const containerRef = (0, react_1.useRef)(null);
     const onClickOutside = (0, react_1.useCallback)((event) => {
-        var _a, _b;
+        var _a, _b, _c;
         const clickInside = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.contains(event.target);
-        const clickBackdrop = (_b = event.target.className) === null || _b === void 0 ? void 0 : _b.includes('MuiBackdrop-root');
+        const targetElem = event.target;
+        const clickBackdrop = ((_b = targetElem.className) === null || _b === void 0 ? void 0 : _b.includes('MuiBackdrop-root')) ||
+            ((_c = targetElem.className) === null || _c === void 0 ? void 0 : _c.includes('MuiList-root'));
         if (!clickInside || clickBackdrop) {
             close();
         }
