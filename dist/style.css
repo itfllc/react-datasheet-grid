@@ -524,8 +524,8 @@
   text-align: right;
 }
 
-.dsg-hide-date-picker[type="date"]::-webkit-inner-spin-button,
-.dsg-hide-date-picker[type="date"]::-webkit-calendar-picker-indicator {
+.dsg-hide-date-picker[type='date']::-webkit-inner-spin-button,
+.dsg-hide-date-picker[type='date']::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
 }
@@ -584,7 +584,7 @@
 }
 
 .error-cell::before {
-  content: "";
+  content: '';
   top: 0;
   right: 0;
   border-bottom: 1em solid transparent;
@@ -593,7 +593,7 @@
   z-index: 22;
 }
 .error-cell::after {
-  content: "";
+  content: '';
   display: block;
   top: 5px;
   transform: rotate(45deg);

@@ -65,28 +65,49 @@ const keyColumn = (key, column) => (Object.assign(Object.assign({ id: key }, col
     // We pass the key and the original column as columnData to be able to retrieve them in the cell component
     columnData: { key: key, original: column }, component: KeyComponent, 
     // Here we simply wrap all functions to only pass the value of the desired key to the column, and not the entire row
-    copyValue: ({ rowData, rowIndex }) => { var _a, _b; return (_b = (_a = column.copyValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex })) !== null && _b !== void 0 ? _b : null; }, deleteValue: ({ rowData, rowIndex }) => {
+    copyValue: ({ rowData, rowIndex }) => {
+        var _a, _b;
+        return (_b = (_a = column.copyValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex })) !== null && _b !== void 0 ? _b : null;
+    }, deleteValue: ({ rowData, rowIndex }) => {
         var _a, _b;
         (0, setValueAtPath_1.default)(rowData, key, (_b = (_a = column.deleteValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData, rowIndex })) !== null && _b !== void 0 ? _b : null);
         return Object.assign({}, rowData);
     }, pasteValue: ({ rowData, value, rowIndex }) => {
         var _a;
-        (0, setValueAtPath_1.default)(rowData, key, (_a = column.pasteValue) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: (0, getValueAtPath_1.default)(rowData, key), value, rowIndex }));
+        (0, setValueAtPath_1.default)(rowData, key, (_a = column.pasteValue) === null || _a === void 0 ? void 0 : _a.call(column, {
+            rowData: (0, getValueAtPath_1.default)(rowData, key),
+            value,
+            rowIndex,
+        }));
         return Object.assign({}, rowData);
     }, disabled: typeof column.disabled === 'function'
         ? ({ rowData, datas, rowIndex }) => {
             var _a;
             return typeof column.disabled === 'function'
-                ? column.disabled({ rowData: (0, getValueAtPath_1.default)(rowData, key), datas, rowIndex })
+                ? column.disabled({
+                    rowData: (0, getValueAtPath_1.default)(rowData, key),
+                    datas,
+                    rowIndex,
+                })
                 : (_a = column.disabled) !== null && _a !== void 0 ? _a : false;
         }
         : column.disabled, cellClassName: typeof column.cellClassName === 'function'
         ? ({ rowData, rowIndex, columnId }) => {
             var _a;
             return typeof column.cellClassName === 'function'
-                ? column.cellClassName({ rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex, columnId })
+                ? column.cellClassName({
+                    rowData: (0, getValueAtPath_1.default)(rowData, key),
+                    rowIndex,
+                    columnId,
+                })
                 : (_a = column.cellClassName) !== null && _a !== void 0 ? _a : undefined;
         }
-        : column.cellClassName, isCellEmpty: ({ rowData, rowIndex }) => { var _a, _b; return (_b = (_a = column.isCellEmpty) === null || _a === void 0 ? void 0 : _a.call(column, { rowData: (0, getValueAtPath_1.default)(rowData, key), rowIndex })) !== null && _b !== void 0 ? _b : false; } }));
+        : column.cellClassName, isCellEmpty: ({ rowData, rowIndex }) => {
+        var _a, _b;
+        return (_b = (_a = column.isCellEmpty) === null || _a === void 0 ? void 0 : _a.call(column, {
+            rowData: (0, getValueAtPath_1.default)(rowData, key),
+            rowIndex,
+        })) !== null && _b !== void 0 ? _b : false;
+    } }));
 exports.keyColumn = keyColumn;
 //# sourceMappingURL=keyColumn.js.map

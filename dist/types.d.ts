@@ -84,7 +84,7 @@ export type Column<T, C, PasteValue> = {
      *
      * @param placement 表示場所
      */
-    errorPlacement?: TooltipProps["placement"];
+    errorPlacement?: TooltipProps['placement'];
 };
 export type SelectionContextType = {
     columnRights?: number[];

@@ -146,18 +146,18 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                     const cellIsActive = (activeCell === null || activeCell === void 0 ? void 0 : activeCell.row) === row.index &&
                         activeCell.col === col.index - 1;
                     //  errors[col.index]がなければundefinedを返す
-                    let displayValidationError = "";
+                    let displayValidationError = '';
                     const cellErrorMessages = (_a = errors[col.index]) !== null && _a !== void 0 ? _a : undefined;
                     const isGutter = col.index === 0;
                     if (isGutter) {
                         const displayErrors = [];
                         Object.keys(errors).forEach((key) => {
-                            displayErrors.push(errors[key].join("\n"));
+                            displayErrors.push(errors[key].join('\n'));
                         });
-                        displayValidationError = displayErrors.join("\n");
+                        displayValidationError = displayErrors.join('\n');
                     }
                     else {
-                        displayValidationError = cellErrorMessages === null || cellErrorMessages === void 0 ? void 0 : cellErrorMessages.join("\n");
+                        displayValidationError = cellErrorMessages === null || cellErrorMessages === void 0 ? void 0 : cellErrorMessages.join('\n');
                     }
                     return (react_1.default.createElement(Cell_1.Cell, { key: col.key, gutter: isGutter, stickyRight: hasStickyRightColumn && col.index === columns.length - 1, active: isGutter && rowActive, disabled: cellDisabled, className: (0, classnames_1.default)(typeof colCellClassName === 'function'
                             ? colCellClassName({
@@ -171,7 +171,11 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                                 rowIndex: row.index,
                                 columnId: columns[col.index].id,
                             })
-                            : cellClassName, displayValidationError ? (isGutter ? 'gutter-error-cell' : 'error-cell') : ''), width: col.size, left: col.start, dataTooltipContent: displayValidationError, errorPlacement: columns[col.index].errorPlacement },
+                            : cellClassName, displayValidationError
+                            ? isGutter
+                                ? 'gutter-error-cell'
+                                : 'error-cell'
+                            : ''), width: col.size, left: col.start, dataTooltipContent: displayValidationError, errorPlacement: columns[col.index].errorPlacement },
                         react_1.default.createElement(Component, { rowData: data[row.index], getContextMenuItems: getContextMenuItems, disabled: cellDisabled, active: cellIsActive, columnIndex: col.index - 1, rowIndex: row.index, focus: cellIsActive && editing, deleteRow: deleteGivenRow(row.index), duplicateRow: duplicateGivenRow(row.index), stopEditing: stopEditing, insertRowBelow: insertAfterGivenRow(row.index), setRowData: setGivenRowData(row.index), columnData: columns[col.index].columnData })));
                 })));
             }),
