@@ -1111,9 +1111,10 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
     ]);
     (0, useDocumentEventListener_1.useDocumentEventListener)('keydown', onKeyDown);
     const onContextMenu = (0, react_1.useCallback)((event) => {
-        var _a;
+        var _a, _b;
         const clickInside = ((_a = innerRef.current) === null || _a === void 0 ? void 0 : _a.contains(event.target)) || false;
-        const cursorIndex = clickInside
+        const clickBackdrop = (_b = event.target.className) === null || _b === void 0 ? void 0 : _b.includes('MuiBackdrop-root');
+        const cursorIndex = clickInside || clickBackdrop
             ? getCursorIndex(event, true, true)
             : null;
         const clickOnActiveCell = cursorIndex &&
@@ -1121,7 +1122,7 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
             activeCell.col === cursorIndex.col &&
             activeCell.row === cursorIndex.row &&
             editing;
-        if (clickInside && !clickOnActiveCell) {
+        if ((clickInside || clickBackdrop) && !clickOnActiveCell) {
             event.preventDefault();
         }
     }, [getCursorIndex, activeCell, editing]);
@@ -1332,7 +1333,9 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
                 });
             } }),
         !lockRows && AddRowsComponent && (react_1.default.createElement(AddRowsComponent, { addRows: (count) => insertRowAfter(data.length - 1, count) })),
-        contextMenu && contextMenuItems.length > 0 && (react_1.default.createElement(ContextMenuComponent, { clientX: contextMenu.x, clientY: contextMenu.y, cursorIndex: contextMenu.cursorIndex, items: contextMenuItems, close: () => setContextMenu(null) }))));
+        contextMenu && contextMenuItems.length > 0 && (react_1.default.createElement(ContextMenuComponent, { clientX: contextMenu.x, clientY: contextMenu.y, cursorIndex: contextMenu.cursorIndex, items: contextMenuItems, close: () => {
+                setContextMenu(null);
+            } }))));
 }));
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

@@ -2,6 +2,7 @@ import * as React from 'react'
 import { FC, useCallback, useRef } from 'react'
 import { useDocumentEventListener } from '../hooks/useDocumentEventListener'
 import { ContextMenuItem, ContextMenuComponentProps } from '../types'
+import { Menu, MenuItem } from '@mui/material'
 
 export const defaultRenderItem = (item: ContextMenuItem) => {
   if (item.type === 'CUT') {
@@ -58,8 +59,11 @@ export const createContextMenuComponent =
     const onClickOutside = useCallback(
       (event: MouseEvent) => {
         const clickInside = containerRef.current?.contains(event.target as Node)
+        const clickBackdrop = (event.target as HTMLElement).className?.includes(
+          'MuiBackdrop-root'
+        )
 
-        if (!clickInside) {
+        if (!clickInside || clickBackdrop) {
           close()
         }
       },
@@ -68,21 +72,19 @@ export const createContextMenuComponent =
     useDocumentEventListener('mousedown', onClickOutside)
 
     return (
-      <div
-        className="dsg-context-menu"
-        style={{ left: clientX + 'px', top: clientY + 'px' }}
+      <Menu
+        open={true}
+        anchorReference="anchorPosition"
+        anchorPosition={{ top: clientY, left: clientX }}
         ref={containerRef}
+        onClose={close}
       >
         {items.map((item) => (
-          <div
-            key={item.type}
-            onClick={item.action}
-            className="dsg-context-menu-item"
-          >
+          <MenuItem key={item.type} onClick={item.action} dense>
             {renderItem(item)}
-          </div>
+          </MenuItem>
         ))}
-      </div>
+      </Menu>
     )
   }
 

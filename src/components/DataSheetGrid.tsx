@@ -1521,10 +1521,14 @@ export const DataSheetGrid = React.memo(
         (event: MouseEvent) => {
           const clickInside =
             innerRef.current?.contains(event.target as Node) || false
+          const clickBackdrop = (
+            event.target as HTMLElement
+          ).className?.includes('MuiBackdrop-root')
 
-          const cursorIndex = clickInside
-            ? getCursorIndex(event, true, true)
-            : null
+          const cursorIndex =
+            clickInside || clickBackdrop
+              ? getCursorIndex(event, true, true)
+              : null
 
           const clickOnActiveCell =
             cursorIndex &&
@@ -1533,7 +1537,7 @@ export const DataSheetGrid = React.memo(
             activeCell.row === cursorIndex.row &&
             editing
 
-          if (clickInside && !clickOnActiveCell) {
+          if ((clickInside || clickBackdrop) && !clickOnActiveCell) {
             event.preventDefault()
           }
         },
@@ -1845,7 +1849,9 @@ export const DataSheetGrid = React.memo(
               clientY={contextMenu.y}
               cursorIndex={contextMenu.cursorIndex}
               items={contextMenuItems}
-              close={() => setContextMenu(null)}
+              close={() => {
+                setContextMenu(null)
+              }}
             />
           )}
         </div>

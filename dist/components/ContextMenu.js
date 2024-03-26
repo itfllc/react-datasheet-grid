@@ -27,6 +27,7 @@ exports.ContextMenu = exports.createContextMenuComponent = exports.defaultRender
 const React = __importStar(require("react"));
 const react_1 = require("react");
 const useDocumentEventListener_1 = require("../hooks/useDocumentEventListener");
+const material_1 = require("@mui/material");
 const defaultRenderItem = (item) => {
     if (item.type === 'CUT') {
         return React.createElement(React.Fragment, null, "Cut");
@@ -68,14 +69,15 @@ const createContextMenuComponent = (renderItem = exports.defaultRenderItem) =>
 ({ clientX, clientY, items, close }) => {
     const containerRef = (0, react_1.useRef)(null);
     const onClickOutside = (0, react_1.useCallback)((event) => {
-        var _a;
+        var _a, _b;
         const clickInside = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.contains(event.target);
-        if (!clickInside) {
+        const clickBackdrop = (_b = event.target.className) === null || _b === void 0 ? void 0 : _b.includes('MuiBackdrop-root');
+        if (!clickInside || clickBackdrop) {
             close();
         }
     }, [close]);
     (0, useDocumentEventListener_1.useDocumentEventListener)('mousedown', onClickOutside);
-    return (React.createElement("div", { className: "dsg-context-menu", style: { left: clientX + 'px', top: clientY + 'px' }, ref: containerRef }, items.map((item) => (React.createElement("div", { key: item.type, onClick: item.action, className: "dsg-context-menu-item" }, renderItem(item))))));
+    return (React.createElement(material_1.Menu, { open: true, anchorReference: "anchorPosition", anchorPosition: { top: clientY, left: clientX }, ref: containerRef, onClose: close }, items.map((item) => (React.createElement(material_1.MenuItem, { key: item.type, onClick: item.action, dense: true }, renderItem(item))))));
 };
 exports.createContextMenuComponent = createContextMenuComponent;
 exports.ContextMenu = (0, exports.createContextMenuComponent)(exports.defaultRenderItem);
