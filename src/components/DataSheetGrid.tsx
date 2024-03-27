@@ -1521,9 +1521,10 @@ export const DataSheetGrid = React.memo(
         (event: MouseEvent) => {
           const clickInside =
             innerRef.current?.contains(event.target as Node) || false
-          const clickBackdrop = (
-            event.target as HTMLElement
-          ).className?.includes('MuiBackdrop-root')
+          const targetElem = event.target as HTMLElement
+          const clickBackdrop =
+            targetElem.className?.includes('MuiBackdrop-root') ||
+            targetElem.className?.includes('MuiList-root')
 
           const cursorIndex =
             clickInside || clickBackdrop
