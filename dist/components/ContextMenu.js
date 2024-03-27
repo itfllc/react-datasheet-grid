@@ -69,17 +69,16 @@ const createContextMenuComponent = (renderItem = exports.defaultRenderItem) =>
 ({ clientX, clientY, items, close }) => {
     const containerRef = (0, react_1.useRef)(null);
     const onClickOutside = (0, react_1.useCallback)((event) => {
-        var _a, _b, _c;
+        var _a, _b;
         const clickInside = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.contains(event.target);
         const targetElem = event.target;
-        const clickBackdrop = ((_b = targetElem.className) === null || _b === void 0 ? void 0 : _b.includes('MuiBackdrop-root')) ||
-            ((_c = targetElem.className) === null || _c === void 0 ? void 0 : _c.includes('MuiList-root'));
+        const clickBackdrop = (_b = targetElem.className) === null || _b === void 0 ? void 0 : _b.includes('MuiBackdrop-root');
         if (!clickInside || clickBackdrop) {
             close();
         }
     }, [close]);
     (0, useDocumentEventListener_1.useDocumentEventListener)('mousedown', onClickOutside);
-    return (React.createElement(material_1.Menu, { open: true, anchorReference: "anchorPosition", anchorPosition: { top: clientY, left: clientX }, ref: containerRef, onClose: close }, items.map((item) => (React.createElement(material_1.MenuItem, { key: item.type, onClick: item.action, dense: true }, renderItem(item))))));
+    return (React.createElement(material_1.Menu, { open: true, anchorReference: "anchorPosition", anchorPosition: { top: clientY + 2, left: clientX + 2 }, ref: containerRef, onClose: close }, items.map((item) => (React.createElement(material_1.MenuItem, { key: item.type, onClick: item.action, dense: true }, renderItem(item))))));
 };
 exports.createContextMenuComponent = createContextMenuComponent;
 exports.ContextMenu = (0, exports.createContextMenuComponent)(exports.defaultRenderItem);

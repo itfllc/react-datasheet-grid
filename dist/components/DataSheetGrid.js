@@ -1111,11 +1111,10 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
     ]);
     (0, useDocumentEventListener_1.useDocumentEventListener)('keydown', onKeyDown);
     const onContextMenu = (0, react_1.useCallback)((event) => {
-        var _a, _b, _c;
+        var _a, _b;
         const clickInside = ((_a = innerRef.current) === null || _a === void 0 ? void 0 : _a.contains(event.target)) || false;
         const targetElem = event.target;
-        const clickBackdrop = ((_b = targetElem.className) === null || _b === void 0 ? void 0 : _b.includes('MuiBackdrop-root')) ||
-            ((_c = targetElem.className) === null || _c === void 0 ? void 0 : _c.includes('MuiList-root'));
+        const clickBackdrop = (_b = targetElem.className) === null || _b === void 0 ? void 0 : _b.includes('MuiBackdrop-root');
         const cursorIndex = clickInside || clickBackdrop
             ? getCursorIndex(event, true, true)
             : null;

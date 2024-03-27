@@ -60,9 +60,7 @@ export const createContextMenuComponent =
       (event: MouseEvent) => {
         const clickInside = containerRef.current?.contains(event.target as Node)
         const targetElem = event.target as HTMLElement
-        const clickBackdrop =
-          targetElem.className?.includes('MuiBackdrop-root') ||
-          targetElem.className?.includes('MuiList-root')
+        const clickBackdrop = targetElem.className?.includes('MuiBackdrop-root')
 
         if (!clickInside || clickBackdrop) {
           close()
@@ -76,7 +74,7 @@ export const createContextMenuComponent =
       <Menu
         open={true}
         anchorReference="anchorPosition"
-        anchorPosition={{ top: clientY, left: clientX }}
+        anchorPosition={{ top: clientY + 2, left: clientX + 2 }}
         ref={containerRef}
         onClose={close}
       >
