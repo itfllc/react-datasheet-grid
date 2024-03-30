@@ -1467,9 +1467,7 @@ export const DataSheetGrid = React.memo(
               lastEditingCellRef.current = activeCell
               setSelectionCell(null)
               // NOTE: 非編集状態でキー入力した際、IMEが有効になっていても半角英数が入力されてしまうので、focusイベントを遅延発火させる
-              setTimeout(() => {
                 setEditing(true)
-              })
               scrollTo(activeCell)
             }
           } else if (['Backspace', 'Delete'].includes(event.key)) {
