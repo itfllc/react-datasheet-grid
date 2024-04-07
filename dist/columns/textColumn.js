@@ -33,6 +33,7 @@ const useFirstRender_1 = require("../hooks/useFirstRender");
 const TextComponent = react_1.default.memo(({ active, focus, rowData, setRowData, columnData: { placeholder, alignRight, formatInputOnFocus, formatBlurredInput, parseUserInput, continuousUpdates, }, }) => {
     const ref = (0, react_1.useRef)(null);
     const firstRender = (0, useFirstRender_1.useFirstRender)();
+    const [caretColor, setCaretColor] = react_1.default.useState('inherit');
     // We create refs for async access so we don't have to add it to the useEffect dependencies
     const asyncRef = (0, react_1.useRef)({
         rowData,
@@ -68,6 +69,7 @@ const TextComponent = react_1.default.memo(({ active, focus, rowData, setRowData
         // - If the user gains focus by typing, it will replace the existing text, as expected
         // - If the user gains focus by clicking or pressing Enter, the text will be preserved and selected
         if (focus) {
+            setCaretColor('inherit');
             if (ref.current) {
                 // Make sure to first format the input
                 ref.current.value = asyncRef.current.formatInputOnFocus(asyncRef.current.rowData);
@@ -101,6 +103,18 @@ const TextComponent = react_1.default.memo(({ active, focus, rowData, setRowData
             ref.current.value = asyncRef.current.formatBlurredInput(rowData);
         }
     }, [focus, rowData]);
+    (0, react_1.useEffect)(() => {
+        if (active) {
+            // IMEのための対応
+            // 選択した際は文字を入力するかはわからないので、カーソルの色を消す
+            setCaretColor('white');
+            // Inputは選択時にIMEを有効にするために、focusイベントを発火させておく
+            setTimeout(() => {
+                var _a;
+                (_a = ref.current) === null || _a === void 0 ? void 0 : _a.focus();
+            });
+        }
+    }, [active]);
     return (react_1.default.createElement("input", { 
         // We use an uncontrolled component for better performance
         defaultValue: formatBlurredInput(rowData), className: (0, classnames_1.default)('dsg-input', alignRight && 'dsg-input-align-right'), placeholder: active ? placeholder : undefined, 
@@ -109,7 +123,7 @@ const TextComponent = react_1.default.memo(({ active, focus, rowData, setRowData
         // Make sure that while the cell is not focus, the user cannot interact with the input
         // The cursor will not change to "I", the style of the input will not change,
         // and the user cannot click and edit the input (this part is handled by DataSheetGrid itself)
-        style: { pointerEvents: focus ? 'auto' : 'none' }, onChange: (e) => {
+        style: { pointerEvents: focus ? 'auto' : 'none', caretColor }, onChange: (e) => {
             asyncRef.current.changedAt = Date.now();
             // Only update the row's value as the user types if continuousUpdates is true
             if (continuousUpdates) {

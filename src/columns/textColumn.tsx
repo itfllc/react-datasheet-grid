@@ -51,6 +51,8 @@ const TextComponent = React.memo<
     const ref = useRef<HTMLInputElement>(null)
     const firstRender = useFirstRender()
 
+    const [caretColor, setCaretColor] = React.useState('inherit')
+
     // We create refs for async access so we don't have to add it to the useEffect dependencies
     const asyncRef = useRef({
       rowData,
@@ -87,6 +89,7 @@ const TextComponent = React.memo<
       // - If the user gains focus by typing, it will replace the existing text, as expected
       // - If the user gains focus by clicking or pressing Enter, the text will be preserved and selected
       if (focus) {
+        setCaretColor('inherit')
         if (ref.current) {
           // Make sure to first format the input
           ref.current.value = asyncRef.current.formatInputOnFocus(
@@ -129,6 +132,18 @@ const TextComponent = React.memo<
       }
     }, [focus, rowData])
 
+    useEffect(() => {
+      if (active) {
+        // IMEのための対応
+        // 選択した際は文字を入力するかはわからないので、カーソルの色を消す
+        setCaretColor('white')
+        // Inputは選択時にIMEを有効にするために、focusイベントを発火させておく
+        setTimeout(() => {
+          ref.current?.focus()
+        })
+      }
+    }, [active])
+
     return (
       <input
         // We use an uncontrolled component for better performance
@@ -141,7 +156,7 @@ const TextComponent = React.memo<
         // Make sure that while the cell is not focus, the user cannot interact with the input
         // The cursor will not change to "I", the style of the input will not change,
         // and the user cannot click and edit the input (this part is handled by DataSheetGrid itself)
-        style={{ pointerEvents: focus ? 'auto' : 'none' }}
+        style={{ pointerEvents: focus ? 'auto' : 'none', caretColor }}
         onChange={(e) => {
           asyncRef.current.changedAt = Date.now()
 
