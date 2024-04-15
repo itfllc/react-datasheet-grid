@@ -86,39 +86,52 @@ const parseFlexValue = (value) => {
 };
 exports.parseFlexValue = parseFlexValue;
 const useColumns = (columns, gutterColumn, stickyRightColumn) => {
-    return (0, react_1.useMemo)(() => {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-        const partialColumns = [
-            gutterColumn === false
-                ? {
-                    basis: 0,
-                    grow: 0,
-                    shrink: 0,
-                    minWidth: 0,
-                    // eslint-disable-next-line react/display-name
-                    component: () => react_1.default.createElement(react_1.default.Fragment, null),
-                    headerClassName: 'dsg-hidden-cell',
-                    cellClassName: 'dsg-hidden-cell',
-                    isCellEmpty: cellAlwaysEmpty,
-                }
-                : Object.assign(Object.assign({}, gutterColumn), { basis: (_a = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.basis) !== null && _a !== void 0 ? _a : 40, grow: (_b = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.grow) !== null && _b !== void 0 ? _b : 0, shrink: (_c = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.shrink) !== null && _c !== void 0 ? _c : 0, minWidth: (_d = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.minWidth) !== null && _d !== void 0 ? _d : 0, title: (_e = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.title) !== null && _e !== void 0 ? _e : (react_1.default.createElement("div", { className: "dsg-corner-indicator" })), component: (_f = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.component) !== null && _f !== void 0 ? _f : defaultGutterComponent, isCellEmpty: cellAlwaysEmpty }),
-            ...columns,
-        ];
-        if (stickyRightColumn) {
-            partialColumns.push(Object.assign(Object.assign({}, stickyRightColumn), { basis: (_g = stickyRightColumn === null || stickyRightColumn === void 0 ? void 0 : stickyRightColumn.basis) !== null && _g !== void 0 ? _g : 40, grow: (_h = stickyRightColumn === null || stickyRightColumn === void 0 ? void 0 : stickyRightColumn.grow) !== null && _h !== void 0 ? _h : 0, shrink: (_j = stickyRightColumn === null || stickyRightColumn === void 0 ? void 0 : stickyRightColumn.shrink) !== null && _j !== void 0 ? _j : 0, minWidth: (_k = stickyRightColumn.minWidth) !== null && _k !== void 0 ? _k : 0, isCellEmpty: cellAlwaysEmpty }));
+    const [columnsWidth, setColumnsWidth] = (0, react_1.useState)(columns.map((column) => {
+        let width = 120;
+        if (typeof column.width === 'string') {
+            width = parseInt(column.width);
         }
-        return partialColumns.map((column) => {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
-            const legacyWidth = column.width !== undefined
-                ? (0, exports.parseFlexValue)(column.width)
-                : {
-                    basis: undefined,
-                    grow: undefined,
-                    shrink: undefined,
-                };
-            return Object.assign(Object.assign({}, column), { basis: (_b = (_a = column.basis) !== null && _a !== void 0 ? _a : legacyWidth.basis) !== null && _b !== void 0 ? _b : 0, grow: (_d = (_c = column.grow) !== null && _c !== void 0 ? _c : legacyWidth.grow) !== null && _d !== void 0 ? _d : 1, shrink: (_f = (_e = column.shrink) !== null && _e !== void 0 ? _e : legacyWidth.shrink) !== null && _f !== void 0 ? _f : 1, minWidth: (_g = column.minWidth) !== null && _g !== void 0 ? _g : 100, component: (_h = column.component) !== null && _h !== void 0 ? _h : defaultComponent, disableKeys: (_j = column.disableKeys) !== null && _j !== void 0 ? _j : false, disabled: (_k = column.disabled) !== null && _k !== void 0 ? _k : false, keepFocus: (_l = column.keepFocus) !== null && _l !== void 0 ? _l : false, deleteValue: (_m = column.deleteValue) !== null && _m !== void 0 ? _m : identityRow, copyValue: (_o = column.copyValue) !== null && _o !== void 0 ? _o : defaultCopyValue, pasteValue: (_p = column.pasteValue) !== null && _p !== void 0 ? _p : identityRow, prePasteValues: (_q = column.prePasteValues) !== null && _q !== void 0 ? _q : defaultPrePasteValues, isCellEmpty: (_r = column.isCellEmpty) !== null && _r !== void 0 ? _r : defaultIsCellEmpty });
-        });
-    }, [gutterColumn, stickyRightColumn, columns]);
+        return { id: column.id, width: width };
+    }));
+    return [(0, react_1.useMemo)(() => {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            const partialColumns = [
+                gutterColumn === false
+                    ? {
+                        basis: 0,
+                        grow: 0,
+                        shrink: 0,
+                        minWidth: 0,
+                        // eslint-disable-next-line react/display-name
+                        component: () => react_1.default.createElement(react_1.default.Fragment, null),
+                        headerClassName: 'dsg-hidden-cell',
+                        cellClassName: 'dsg-hidden-cell',
+                        isCellEmpty: cellAlwaysEmpty,
+                    }
+                    : Object.assign(Object.assign({}, gutterColumn), { basis: (_a = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.basis) !== null && _a !== void 0 ? _a : 40, grow: (_b = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.grow) !== null && _b !== void 0 ? _b : 0, shrink: (_c = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.shrink) !== null && _c !== void 0 ? _c : 0, minWidth: (_d = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.minWidth) !== null && _d !== void 0 ? _d : 0, title: (_e = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.title) !== null && _e !== void 0 ? _e : (react_1.default.createElement("div", { className: "dsg-corner-indicator" })), component: (_f = gutterColumn === null || gutterColumn === void 0 ? void 0 : gutterColumn.component) !== null && _f !== void 0 ? _f : defaultGutterComponent, isCellEmpty: cellAlwaysEmpty }),
+                ...columns,
+            ];
+            if (stickyRightColumn) {
+                partialColumns.push(Object.assign(Object.assign({}, stickyRightColumn), { basis: (_g = stickyRightColumn === null || stickyRightColumn === void 0 ? void 0 : stickyRightColumn.basis) !== null && _g !== void 0 ? _g : 40, grow: (_h = stickyRightColumn === null || stickyRightColumn === void 0 ? void 0 : stickyRightColumn.grow) !== null && _h !== void 0 ? _h : 0, shrink: (_j = stickyRightColumn === null || stickyRightColumn === void 0 ? void 0 : stickyRightColumn.shrink) !== null && _j !== void 0 ? _j : 0, minWidth: (_k = stickyRightColumn.minWidth) !== null && _k !== void 0 ? _k : 0, isCellEmpty: cellAlwaysEmpty }));
+            }
+            return partialColumns.map((column) => {
+                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
+                let width = (_a = column.width) !== null && _a !== void 0 ? _a : 1;
+                const col = columnsWidth === null || columnsWidth === void 0 ? void 0 : columnsWidth.find((x) => x.id === column.id);
+                if (col && col.width) {
+                    width = `0 0 ${col === null || col === void 0 ? void 0 : col.width}px`;
+                }
+                const legacyWidth = width !== undefined
+                    ? (0, exports.parseFlexValue)(width)
+                    : {
+                        basis: undefined,
+                        grow: undefined,
+                        shrink: undefined,
+                    };
+                return Object.assign(Object.assign({}, column), { width, basis: (_c = (_b = column.basis) !== null && _b !== void 0 ? _b : legacyWidth.basis) !== null && _c !== void 0 ? _c : 0, grow: (_e = (_d = column.grow) !== null && _d !== void 0 ? _d : legacyWidth.grow) !== null && _e !== void 0 ? _e : 1, shrink: (_g = (_f = column.shrink) !== null && _f !== void 0 ? _f : legacyWidth.shrink) !== null && _g !== void 0 ? _g : 1, minWidth: (_h = column.minWidth) !== null && _h !== void 0 ? _h : 100, component: (_j = column.component) !== null && _j !== void 0 ? _j : defaultComponent, disableKeys: (_k = column.disableKeys) !== null && _k !== void 0 ? _k : false, disabled: (_l = column.disabled) !== null && _l !== void 0 ? _l : false, keepFocus: (_m = column.keepFocus) !== null && _m !== void 0 ? _m : false, deleteValue: (_o = column.deleteValue) !== null && _o !== void 0 ? _o : identityRow, copyValue: (_p = column.copyValue) !== null && _p !== void 0 ? _p : defaultCopyValue, pasteValue: (_q = column.pasteValue) !== null && _q !== void 0 ? _q : identityRow, prePasteValues: (_r = column.prePasteValues) !== null && _r !== void 0 ? _r : defaultPrePasteValues, isCellEmpty: (_s = column.isCellEmpty) !== null && _s !== void 0 ? _s : defaultIsCellEmpty });
+            });
+        }, [gutterColumn, stickyRightColumn, columns, columnsWidth]),
+        setColumnsWidth];
 };
 exports.useColumns = useColumns;
 //# sourceMappingURL=useColumns.js.map

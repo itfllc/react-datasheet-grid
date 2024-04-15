@@ -64,7 +64,7 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
     var _a, _b, _c, _d, _e, _f;
     const lastEditingCellRef = (0, react_1.useRef)(null);
     const disableContextMenu = disableContextMenuRaw || lockRows;
-    const columns = (0, useColumns_1.useColumns)(rawColumns, gutterColumn, stickyRightColumn);
+    const [columns, setColumnsWidth] = (0, useColumns_1.useColumns)(rawColumns, gutterColumn, stickyRightColumn);
     const hasStickyRightColumn = Boolean(stickyRightColumn);
     const innerRef = (0, react_1.useRef)(null);
     const outerRef = (0, react_1.useRef)(null);
@@ -174,16 +174,7 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
             };
         }
         return null;
-    }, [
-        columnRights,
-        columnWidths,
-        data.length,
-        getInnerBoundingClientRect,
-        getOuterBoundingClientRect,
-        headerRowHeight,
-        hasStickyRightColumn,
-        getRowIndex,
-    ]);
+    }, [columnRights, columnWidths, getInnerBoundingClientRect, getOuterBoundingClientRect, headerRowHeight, hasStickyRightColumn, getRowIndex]);
     const dataRef = (0, react_1.useRef)(data);
     dataRef.current = data;
     const isCellDisabled = (0, react_1.useCallback)((cell) => {
@@ -1322,7 +1313,7 @@ exports.DataSheetGrid = react_1.default.memo(react_1.default.forwardRef(({ value
                 e.target.blur();
                 setActiveCell({ col: 0, row: 0 });
             } }),
-        react_1.default.createElement(Grid_1.Grid, { columns: columns, outerRef: outerRef, columnWidths: columnWidths, hasStickyRightColumn: hasStickyRightColumn, displayHeight: displayHeight, data: data, fullWidth: fullWidth, headerRowHeight: headerRowHeight, activeCell: activeCell, innerRef: innerRef, rowHeight: getRowSize, rowKey: rowKey, selection: selection, rowClassName: rowClassName, editing: editing, getContextMenuItems: getContextMenuItems, setRowData: setRowData, deleteRows: deleteRows, insertRowAfter: insertRowAfter, duplicateRows: duplicateRows, stopEditing: stopEditing, cellClassName: cellClassName, onScroll: onScroll },
+        react_1.default.createElement(Grid_1.Grid, { columns: columns, outerRef: outerRef, columnWidths: columnWidths, hasStickyRightColumn: hasStickyRightColumn, displayHeight: displayHeight, data: data, fullWidth: fullWidth, headerRowHeight: headerRowHeight, activeCell: activeCell, innerRef: innerRef, rowHeight: getRowSize, rowKey: rowKey, selection: selection, rowClassName: rowClassName, editing: editing, getContextMenuItems: getContextMenuItems, setRowData: setRowData, deleteRows: deleteRows, insertRowAfter: insertRowAfter, duplicateRows: duplicateRows, stopEditing: stopEditing, cellClassName: cellClassName, onScroll: onScroll, setColumnsWidth: setColumnsWidth },
             react_1.default.createElement(SelectionRect_1.SelectionRect, { columnRights: columnRights, columnWidths: columnWidths, activeCell: activeCell, selection: selection, headerRowHeight: headerRowHeight, rowHeight: getRowSize, hasStickyRightColumn: hasStickyRightColumn, dataLength: data.length, viewHeight: height, viewWidth: width, contentWidth: fullWidth ? undefined : contentWidth, edges: edges, editing: editing, isCellDisabled: isCellDisabled, expandSelection: expandSelection })),
         react_1.default.createElement("div", { ref: afterTabIndexRef, tabIndex: rawColumns.length && data.length ? 0 : undefined, onFocus: (e) => {
                 e.target.blur();

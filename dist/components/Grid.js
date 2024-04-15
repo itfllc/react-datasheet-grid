@@ -32,7 +32,8 @@ const react_1 = __importStar(require("react"));
 const classnames_1 = __importDefault(require("classnames"));
 const Cell_1 = require("./Cell");
 const useMemoizedIndexCallback_1 = require("../hooks/useMemoizedIndexCallback");
-const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightColumn, displayHeight, headerRowHeight, rowHeight, rowKey, fullWidth, selection, activeCell, rowClassName, cellClassName, children, editing, getContextMenuItems, setRowData, deleteRows, duplicateRows, insertRowAfter, stopEditing, onScroll, }) => {
+const Resizer_1 = __importDefault(require("./Resizer"));
+const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightColumn, displayHeight, headerRowHeight, rowHeight, rowKey, fullWidth, selection, activeCell, rowClassName, cellClassName, children, editing, getContextMenuItems, setRowData, deleteRows, duplicateRows, insertRowAfter, stopEditing, onScroll, setColumnsWidth }) => {
     var _a, _b, _c, _d;
     const rowVirtualizer = (0, react_virtual_1.useVirtualizer)({
         count: data.length,
@@ -101,7 +102,8 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                     selectionColMin <= col.index - 1 &&
                     selectionColMax >= col.index - 1 &&
                     'dsg-cell-header-active', columns[col.index].headerClassName) },
-                react_1.default.createElement("div", { className: "dsg-cell-header-container" }, columns[col.index].title)))))),
+                react_1.default.createElement("div", { className: "dsg-cell-header-container" }, columns[col.index].title),
+                react_1.default.createElement(Resizer_1.default, { column: columns[col.index], setColumnsWidth: setColumnsWidth })))))),
             rowVirtualizer.getVirtualItems().map((row) => {
                 const rowActive = Boolean(row.index >= (selectionMinRow !== null && selectionMinRow !== void 0 ? selectionMinRow : Infinity) &&
                     row.index <= (selectionMaxRow !== null && selectionMaxRow !== void 0 ? selectionMaxRow : -Infinity));

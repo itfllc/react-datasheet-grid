@@ -1,8 +1,12 @@
+import React from 'react';
 import { Column, SimpleColumn } from '../types';
 export declare const parseFlexValue: (value: string | number) => {
     basis: number;
     grow: number;
     shrink: number;
 };
-export declare const useColumns: <T extends unknown>(columns: Partial<Column<T, any, any>>[], gutterColumn?: false | Partial<Pick<Column<T, any, string>, "title" | "maxWidth" | "minWidth" | "basis" | "grow" | "shrink" | "component" | "columnData">> | undefined, stickyRightColumn?: Partial<Pick<Column<T, any, string>, "title" | "maxWidth" | "minWidth" | "basis" | "grow" | "shrink" | "component" | "columnData">> | undefined) => Column<T, any, any>[];
+export declare const useColumns: <T extends unknown>(columns: Partial<Column<T, any, any>>[], gutterColumn?: false | Partial<Pick<Column<T, any, string>, "title" | "maxWidth" | "minWidth" | "basis" | "grow" | "shrink" | "component" | "columnData">> | undefined, stickyRightColumn?: Partial<Pick<Column<T, any, string>, "title" | "maxWidth" | "minWidth" | "basis" | "grow" | "shrink" | "component" | "columnData">> | undefined) => [Column<T, any, any>[], React.Dispatch<React.SetStateAction<{
+    id?: string | undefined;
+    width: number;
+}[]>>];
 //# sourceMappingURL=useColumns.d.ts.map

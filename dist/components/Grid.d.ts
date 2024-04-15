@@ -1,6 +1,6 @@
 import React, { ReactNode, RefObject } from 'react';
 import { Cell, Column, ContextMenuItem, DataSheetGridProps, Selection } from '../types';
-export declare const Grid: <T extends unknown>({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightColumn, displayHeight, headerRowHeight, rowHeight, rowKey, fullWidth, selection, activeCell, rowClassName, cellClassName, children, editing, getContextMenuItems, setRowData, deleteRows, duplicateRows, insertRowAfter, stopEditing, onScroll, }: {
+export declare const Grid: <T extends unknown>({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightColumn, displayHeight, headerRowHeight, rowHeight, rowKey, fullWidth, selection, activeCell, rowClassName, cellClassName, children, editing, getContextMenuItems, setRowData, deleteRows, duplicateRows, insertRowAfter, stopEditing, onScroll, setColumnsWidth }: {
     data: T[];
     columns: Column<T, any, any>[];
     outerRef: RefObject<HTMLDivElement>;
@@ -39,5 +39,9 @@ export declare const Grid: <T extends unknown>({ data, columns, outerRef, innerR
         nextRow?: boolean;
     }) => void;
     onScroll?: React.UIEventHandler<HTMLDivElement> | undefined;
+    setColumnsWidth: React.Dispatch<React.SetStateAction<{
+        id?: string | undefined;
+        width: number;
+    }[]>>;
 }) => JSX.Element;
 //# sourceMappingURL=Grid.d.ts.map
