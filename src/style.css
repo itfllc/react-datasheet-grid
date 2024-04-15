@@ -95,6 +95,10 @@
 .dsg-cell-header-container {
   padding: 0 10px;
   line-height: 15px;
+  height: inherit;
+  overflow: hidden;
+  align-items: center;
+  display: flex;
 }
 
 .dsg-cell-header.dsg-cell-gutter {
@@ -613,4 +617,14 @@
   transform: translateX(-50%);
   white-space: pre-wrap;
   width: max-content;
+}
+
+.dsg-resizer {
+  position: absolute;
+  z-index: 30;
+  cursor: col-resize;
+  width: 8px;
+  height: 100%;
+  top: 0;
+  right: -5px;
 }

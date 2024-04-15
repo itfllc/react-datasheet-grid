@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { CellProps, Column, SimpleColumn } from '../types'
 
 const defaultComponent = () => <></>
@@ -74,8 +74,24 @@ export const useColumns = <T extends any>(
   columns: Partial<Column<T, any, any>>[],
   gutterColumn?: SimpleColumn<T, any> | false,
   stickyRightColumn?: SimpleColumn<T, any>
-): Column<T, any, any>[] => {
-  return useMemo<Column<T, any, any>[]>(() => {
+): [
+  Column<T, any, any>[],
+  React.Dispatch<React.SetStateAction<{ id?: string; width: number }[]>>
+] => {
+  const [columnsWidth, setColumnsWidth] = useState<
+    { id?: string; width: number }[]
+  >(
+    columns.map((column) => {
+      let width = 120
+      if (typeof column.width === 'string') {
+        width = parseInt(column.width)
+      }
+      return { id: column.id, width: width }
+    })
+  )
+
+  return [useMemo<Column<T, any, any>[]>(() => {
+
     const partialColumns: Partial<Column<T, any, any>>[] = [
       gutterColumn === false
         ? {
@@ -116,9 +132,14 @@ export const useColumns = <T extends any>(
     }
 
     return partialColumns.map<Column<T, any, any>>((column) => {
+      let width = column.width ?? 1
+      const col = columnsWidth?.find((x) => x.id === column.id)
+      if (col && col.width) {
+        width = `0 0 ${col?.width}px`
+      }
       const legacyWidth =
-        column.width !== undefined
-          ? parseFlexValue(column.width)
+        width !== undefined
+          ? parseFlexValue(width)
           : {
               basis: undefined,
               grow: undefined,
@@ -127,6 +148,7 @@ export const useColumns = <T extends any>(
 
       return {
         ...column,
+        width,
         basis: column.basis ?? legacyWidth.basis ?? 0,
         grow: column.grow ?? legacyWidth.grow ?? 1,
         shrink: column.shrink ?? legacyWidth.shrink ?? 1,
@@ -142,5 +164,6 @@ export const useColumns = <T extends any>(
         isCellEmpty: column.isCellEmpty ?? defaultIsCellEmpty,
       }
     })
-  }, [gutterColumn, stickyRightColumn, columns])
+  }, [gutterColumn, stickyRightColumn, columns, columnsWidth]),
+  setColumnsWidth]
 }

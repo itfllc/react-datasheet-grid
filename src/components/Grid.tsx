@@ -10,6 +10,7 @@ import {
 import cx from 'classnames'
 import { Cell as CellComponent } from './Cell'
 import { useMemoizedIndexCallback } from '../hooks/useMemoizedIndexCallback'
+import Resizer from './Resizer'
 
 export const Grid = <T extends any>({
   data,
@@ -36,6 +37,7 @@ export const Grid = <T extends any>({
   insertRowAfter,
   stopEditing,
   onScroll,
+  setColumnsWidth
 }: {
   data: T[]
   columns: Column<T, any, any>[]
@@ -60,7 +62,11 @@ export const Grid = <T extends any>({
   duplicateRows: (rowMin: number, rowMax?: number) => void
   insertRowAfter: (row: number, count?: number) => void
   stopEditing: (opts?: { nextRow?: boolean }) => void
-  onScroll?: React.UIEventHandler<HTMLDivElement>
+  onScroll?: React.UIEventHandler<HTMLDivElement>,
+  setColumnsWidth: React.Dispatch<React.SetStateAction<{
+    id?: string | undefined;
+    width: number;
+}[]>>
 }) => {
   const rowVirtualizer = useVirtualizer({
     count: data.length,
@@ -168,6 +174,7 @@ export const Grid = <T extends any>({
                 <div className="dsg-cell-header-container">
                   {columns[col.index].title}
                 </div>
+                <Resizer column={columns[col.index]} setColumnsWidth={setColumnsWidth} />
               </CellComponent>
             ))}
           </div>

@@ -92,7 +92,7 @@ export const DataSheetGrid = React.memo(
     ): JSX.Element => {
       const lastEditingCellRef = useRef<Cell | null>(null)
       const disableContextMenu = disableContextMenuRaw || lockRows
-      const columns = useColumns(rawColumns, gutterColumn, stickyRightColumn)
+      const [columns, setColumnsWidth] = useColumns(rawColumns, gutterColumn, stickyRightColumn)
       const hasStickyRightColumn = Boolean(stickyRightColumn)
       const innerRef = useRef<HTMLDivElement>(null)
       const outerRef = useRef<HTMLDivElement>(null)
@@ -269,16 +269,7 @@ export const DataSheetGrid = React.memo(
 
           return null
         },
-        [
-          columnRights,
-          columnWidths,
-          data.length,
-          getInnerBoundingClientRect,
-          getOuterBoundingClientRect,
-          headerRowHeight,
-          hasStickyRightColumn,
-          getRowIndex,
-        ]
+        [columnRights, columnWidths, getInnerBoundingClientRect, getOuterBoundingClientRect, headerRowHeight, hasStickyRightColumn, getRowIndex]
       )
 
       const dataRef = useRef(data)
@@ -1806,6 +1797,7 @@ export const DataSheetGrid = React.memo(
             stopEditing={stopEditing}
             cellClassName={cellClassName}
             onScroll={onScroll}
+            setColumnsWidth={setColumnsWidth}
           >
             <SelectionRect
               columnRights={columnRights}
