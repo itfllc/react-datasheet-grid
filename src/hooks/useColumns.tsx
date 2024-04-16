@@ -83,8 +83,10 @@ export const useColumns = <T extends any>(
   >(
     columns.map((column) => {
       let width = 120
-      if (typeof column.width === 'string') {
-        width = parseInt(column.width)
+      if (typeof column.minWidth === 'string') {
+        width = parseInt(column.minWidth)
+      } else {
+        width = column.minWidth ?? 120
       }
       return { id: column.id, width: width }
     })
