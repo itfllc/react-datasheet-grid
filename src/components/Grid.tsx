@@ -295,6 +295,7 @@ export const Grid = <T extends any>({
                     errorPlacement={columns[col.index].errorPlacement}
                   >
                     <Component
+                      row={data[row.index]}
                       rowData={data[row.index]}
                       getContextMenuItems={getContextMenuItems}
                       disabled={cellDisabled}

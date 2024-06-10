@@ -87,13 +87,10 @@ const parseFlexValue = (value) => {
 exports.parseFlexValue = parseFlexValue;
 const useColumns = (columns, gutterColumn, stickyRightColumn) => {
     const [columnsWidth, setColumnsWidth] = (0, react_1.useState)(columns.map((column) => {
-        var _a;
-        let width = 120;
-        if (typeof column.minWidth === 'string') {
-            width = parseInt(column.minWidth);
-        }
-        else {
-            width = (_a = column.minWidth) !== null && _a !== void 0 ? _a : 120;
+        var _a, _b;
+        let width = (_b = (_a = column.minWidth) !== null && _a !== void 0 ? _a : column.width) !== null && _b !== void 0 ? _b : 180;
+        if (typeof width === 'string') {
+            width = parseInt(width);
         }
         return { id: column.id, width: width };
     }));

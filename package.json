@@ -1,6 +1,6 @@
 {
   "name": "@itfllc/react-datasheet-grid",
-  "version": "4.11.4-0.0.20",
+  "version": "4.11.4-0.0.23",
   "description": "An Excel-like React component to create beautiful spreadsheets.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

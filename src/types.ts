@@ -9,6 +9,7 @@ export type Cell = {
 export type Selection = { min: Cell; max: Cell }
 
 export type CellProps<T, C> = {
+  row: T,
   rowData: T
   rowIndex: number
   columnIndex: number

@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   checkboxColumn,
   Column,
   DataSheetGrid,
+  DataSheetGridRef,
   isoDateColumn,
   keyColumn,
   textColumn,
 } from '../../src'
 import '../../src/style.css'
+import { SelectionWithId } from '../../src/types'
 
 type Row = {
   active: boolean
@@ -22,6 +24,8 @@ type Row = {
 }
 
 function App() {
+  const [selection, setSelection] = useState<SelectionWithId | null | undefined>(null)
+  const ref = useRef<DataSheetGridRef>(null)
   const [data, setData] = useState<any[]>(DATA)
   const columns: Column<any>[] = [
     {
@@ -50,7 +54,20 @@ function App() {
       ...keyColumn<any>(`auth.${i}.isEnabled`, checkboxColumn),
       title: auth.title,
     })),
-  ]
+  ];
+
+  const handleClickButton = () => {
+    console.log(JSON.stringify(selection))
+    if (selection) {
+      ref.current?.setSelection(selection);
+    }
+  };
+
+  const handleSelectionChange = (selection:  { selection: SelectionWithId | null }) => {
+    if (selection.selection) {
+      setSelection(selection.selection)
+    }
+  }
 
   return (
     <div
@@ -62,7 +79,8 @@ function App() {
         height: '500px',
       }}
     >
-      <DataSheetGrid value={data} onChange={setData} columns={columns} />
+      <button onClick={() => handleClickButton()}>console.log(data)</button>
+      <DataSheetGrid value={data} onChange={setData} columns={columns} ref={ref} onSelectionChange={handleSelectionChange} />
     </div>
   )
 }

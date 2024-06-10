@@ -9,6 +9,7 @@ export type Selection = {
     max: Cell;
 };
 export type CellProps<T, C> = {
+    row: T;
     rowData: T;
     rowIndex: number;
     columnIndex: number;
