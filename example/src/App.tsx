@@ -39,6 +39,7 @@ function App() {
           }
         },
       ],
+      disabled: true,
       //   errorPlacement: 'right',
     },
     {

@@ -35,6 +35,7 @@ const TextComponent = React.memo<
   CellProps<string | null, TextColumnData<string | null>>
 >(
   ({
+    disabled,
     active,
     focus,
     rowData,
@@ -139,6 +140,10 @@ const TextComponent = React.memo<
         setCaretColor('white')
         // Inputは選択時にIMEを有効にするために、focusイベントを発火させておく
         setTimeout(() => {
+          // disabledの場合はフォーカスさせない(入力させないため)
+          if (disabled) {
+            return;
+          }
           ref.current?.focus()
         })
       }

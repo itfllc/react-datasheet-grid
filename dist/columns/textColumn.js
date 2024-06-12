@@ -30,7 +30,7 @@ exports.createTextColumn = exports.textColumn = void 0;
 const react_1 = __importStar(require("react"));
 const classnames_1 = __importDefault(require("classnames"));
 const useFirstRender_1 = require("../hooks/useFirstRender");
-const TextComponent = react_1.default.memo(({ active, focus, rowData, setRowData, columnData: { placeholder, alignRight, formatInputOnFocus, formatBlurredInput, parseUserInput, continuousUpdates, }, }) => {
+const TextComponent = react_1.default.memo(({ disabled, active, focus, rowData, setRowData, columnData: { placeholder, alignRight, formatInputOnFocus, formatBlurredInput, parseUserInput, continuousUpdates, }, }) => {
     const ref = (0, react_1.useRef)(null);
     const firstRender = (0, useFirstRender_1.useFirstRender)();
     const [caretColor, setCaretColor] = react_1.default.useState('inherit');
@@ -111,6 +111,10 @@ const TextComponent = react_1.default.memo(({ active, focus, rowData, setRowData
             // Inputは選択時にIMEを有効にするために、focusイベントを発火させておく
             setTimeout(() => {
                 var _a;
+                // disabledの場合はフォーカスさせない(入力させないため)
+                if (disabled) {
+                    return;
+                }
                 (_a = ref.current) === null || _a === void 0 ? void 0 : _a.focus();
             });
         }
