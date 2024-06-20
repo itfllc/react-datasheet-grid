@@ -9,7 +9,7 @@ export type Cell = {
 export type Selection = { min: Cell; max: Cell }
 
 export type CellProps<T, C> = {
-  row: T,
+  row: T
   rowData: T
   rowIndex: number
   columnIndex: number
@@ -87,6 +87,7 @@ export type SelectionContextType = {
   selection: Selection | null
   dataLength: number
   rowHeight: (index: number) => { height: number; top: number }
+  stickyFirstColumn?: boolean
   hasStickyRightColumn: boolean
   editing: boolean
   isCellDisabled: (cell: Cell) => boolean
@@ -166,6 +167,8 @@ export type DataSheetGridProps<T> = {
   columns?: Partial<Column<T, any, any>>[]
   gutterColumn?: SimpleColumn<T, any> | false
   stickyRightColumn?: SimpleColumn<T, any>
+  stickyFirstColumn?: boolean
+  stickyMaxNthColumn?: number
   rowKey?: string | ((opts: { rowData: T; rowIndex: number }) => string)
   height?: number
   rowHeight?: number | ((opt: { rowData: T; rowIndex: number }) => number)

@@ -1,3 +1,4 @@
+import deepEqual from 'fast-deep-equal'
 import React, {
   useCallback,
   useEffect,
@@ -6,6 +7,15 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import { useResizeDetector } from 'react-resize-detector'
+import { useColumns } from '../hooks/useColumns'
+import { useColumnWidths } from '../hooks/useColumnWidths'
+import { useDebounceState } from '../hooks/useDebounceState'
+import { useDeepEqualState } from '../hooks/useDeepEqualState'
+import { useDocumentEventListener } from '../hooks/useDocumentEventListener'
+import { useEdges } from '../hooks/useEdges'
+import { useGetBoundingClientRect } from '../hooks/useGetBoundingClientRect'
+import { useRowHeights } from '../hooks/useRowHeights'
 import {
   Cell,
   Column,
@@ -15,33 +25,23 @@ import {
   Operation,
   Selection,
 } from '../types'
-import { useColumnWidths } from '../hooks/useColumnWidths'
-import { useResizeDetector } from 'react-resize-detector'
-import { useColumns } from '../hooks/useColumns'
-import { useEdges } from '../hooks/useEdges'
-import { useDeepEqualState } from '../hooks/useDeepEqualState'
-import { useDocumentEventListener } from '../hooks/useDocumentEventListener'
-import { useGetBoundingClientRect } from '../hooks/useGetBoundingClientRect'
-import { AddRows } from './AddRows'
-import { useDebounceState } from '../hooks/useDebounceState'
-import deepEqual from 'fast-deep-equal'
-import { ContextMenu } from './ContextMenu'
 import {
   encodeHtml,
   isPrintableUnicode,
   parseTextHtmlData,
   parseTextPlainData,
 } from '../utils/copyPasting'
+import { getAllTabbableElements } from '../utils/tab'
 import {
   getCell,
   getCellWithId,
   getSelection,
   getSelectionWithId,
 } from '../utils/typeCheck'
-import { getAllTabbableElements } from '../utils/tab'
+import { AddRows } from './AddRows'
+import { ContextMenu } from './ContextMenu'
 import { Grid } from './Grid'
 import { SelectionRect } from './SelectionRect'
-import { useRowHeights } from '../hooks/useRowHeights'
 
 const DEFAULT_DATA: any[] = []
 const DEFAULT_COLUMNS: Column<any, any, any>[] = []
@@ -71,6 +71,7 @@ export const DataSheetGrid = React.memo(
         headerRowHeight = typeof rowHeight === 'number' ? rowHeight : 40,
         gutterColumn,
         stickyRightColumn,
+        stickyFirstColumn,
         rowKey,
         addRowsComponent: AddRowsComponent = AddRows,
         createRow = DEFAULT_CREATE_ROW as () => T,
@@ -92,7 +93,11 @@ export const DataSheetGrid = React.memo(
     ): JSX.Element => {
       const lastEditingCellRef = useRef<Cell | null>(null)
       const disableContextMenu = disableContextMenuRaw || lockRows
-      const [columns, setColumnsWidth] = useColumns(rawColumns, gutterColumn, stickyRightColumn)
+      const [columns, setColumnsWidth] = useColumns(
+        rawColumns,
+        gutterColumn,
+        stickyRightColumn
+      )
       const hasStickyRightColumn = Boolean(stickyRightColumn)
       const innerRef = useRef<HTMLDivElement>(null)
       const outerRef = useRef<HTMLDivElement>(null)
@@ -251,6 +256,12 @@ export const DataSheetGrid = React.memo(
               ) {
                 x = 0
               }
+              if (
+                stickyFirstColumn &&
+                event.clientX - outerBoundingClientRect.left <= columnRights[1]
+              ) {
+                x = event.clientX - outerBoundingClientRect.left
+              }
 
               if (
                 hasStickyRightColumn &&
@@ -269,7 +280,16 @@ export const DataSheetGrid = React.memo(
 
           return null
         },
-        [columnRights, columnWidths, getInnerBoundingClientRect, getOuterBoundingClientRect, headerRowHeight, hasStickyRightColumn, getRowIndex]
+        [
+          columnRights,
+          columnWidths,
+          getInnerBoundingClientRect,
+          getOuterBoundingClientRect,
+          headerRowHeight,
+          hasStickyRightColumn,
+          stickyFirstColumn,
+          getRowIndex,
+        ]
       )
 
       const dataRef = useRef(data)
@@ -1458,7 +1478,7 @@ export const DataSheetGrid = React.memo(
               lastEditingCellRef.current = activeCell
               setSelectionCell(null)
               // NOTE: 非編集状態でキー入力した際、IMEが有効になっていても半角英数が入力されてしまうので、focusイベントを遅延発火させる
-                setEditing(true)
+              setEditing(true)
               scrollTo(activeCell)
             }
           } else if (['Backspace', 'Delete'].includes(event.key)) {
@@ -1778,6 +1798,7 @@ export const DataSheetGrid = React.memo(
             outerRef={outerRef}
             columnWidths={columnWidths}
             hasStickyRightColumn={hasStickyRightColumn}
+            stickyFirstColumn={stickyFirstColumn}
             displayHeight={displayHeight}
             data={data}
             fullWidth={fullWidth}
@@ -1807,6 +1828,7 @@ export const DataSheetGrid = React.memo(
               headerRowHeight={headerRowHeight}
               rowHeight={getRowSize}
               hasStickyRightColumn={hasStickyRightColumn}
+              stickyFirstColumn={stickyFirstColumn}
               dataLength={data.length}
               viewHeight={height}
               viewWidth={width}

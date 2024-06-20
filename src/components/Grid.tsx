@@ -1,5 +1,7 @@
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual'
+import cx from 'classnames'
 import React, { ReactNode, RefObject, useEffect } from 'react'
+import { useMemoizedIndexCallback } from '../hooks/useMemoizedIndexCallback'
 import {
   Cell,
   Column,
@@ -7,9 +9,7 @@ import {
   DataSheetGridProps,
   Selection,
 } from '../types'
-import cx from 'classnames'
 import { Cell as CellComponent } from './Cell'
-import { useMemoizedIndexCallback } from '../hooks/useMemoizedIndexCallback'
 import Resizer from './Resizer'
 
 export const Grid = <T extends any>({
@@ -19,6 +19,7 @@ export const Grid = <T extends any>({
   innerRef,
   columnWidths,
   hasStickyRightColumn,
+  stickyFirstColumn,
   displayHeight,
   headerRowHeight,
   rowHeight,
@@ -37,7 +38,7 @@ export const Grid = <T extends any>({
   insertRowAfter,
   stopEditing,
   onScroll,
-  setColumnsWidth
+  setColumnsWidth,
 }: {
   data: T[]
   columns: Column<T, any, any>[]
@@ -45,6 +46,7 @@ export const Grid = <T extends any>({
   innerRef: RefObject<HTMLDivElement>
   columnWidths?: number[]
   hasStickyRightColumn: boolean
+  stickyFirstColumn?: boolean
   displayHeight: number
   headerRowHeight: number
   rowHeight: (index: number) => { height: number }
@@ -62,11 +64,15 @@ export const Grid = <T extends any>({
   duplicateRows: (rowMin: number, rowMax?: number) => void
   insertRowAfter: (row: number, count?: number) => void
   stopEditing: (opts?: { nextRow?: boolean }) => void
-  onScroll?: React.UIEventHandler<HTMLDivElement>,
-  setColumnsWidth: React.Dispatch<React.SetStateAction<{
-    id?: string | undefined;
-    width: number;
-}[]>>
+  onScroll?: React.UIEventHandler<HTMLDivElement>
+  setColumnsWidth: React.Dispatch<
+    React.SetStateAction<
+      {
+        id?: string | undefined
+        width: number
+      }[]
+    >
+  >
 }) => {
   const rowVirtualizer = useVirtualizer({
     count: data.length,
@@ -106,6 +112,11 @@ export const Grid = <T extends any>({
       if (result[0] !== 0) {
         result.unshift(0)
       }
+
+      if (stickyFirstColumn && result[1] !== 1) {
+        result.splice(1, 0, 1)
+      }
+
       if (
         hasStickyRightColumn &&
         result[result.length - 1] !== columns.length - 1
@@ -159,6 +170,7 @@ export const Grid = <T extends any>({
                 stickyRight={
                   hasStickyRightColumn && col.index === columns.length - 1
                 }
+                stickyFirstColumn={stickyFirstColumn && col.index === 1}
                 width={col.size}
                 left={col.start}
                 className={cx(
@@ -174,7 +186,10 @@ export const Grid = <T extends any>({
                 <div className="dsg-cell-header-container">
                   {columns[col.index].title}
                 </div>
-                <Resizer column={columns[col.index]} setColumnsWidth={setColumnsWidth} />
+                <Resizer
+                  column={columns[col.index]}
+                  setColumnsWidth={setColumnsWidth}
+                />
               </CellComponent>
             ))}
           </div>
@@ -266,6 +281,7 @@ export const Grid = <T extends any>({
                     stickyRight={
                       hasStickyRightColumn && col.index === columns.length - 1
                     }
+                    stickyFirstColumn={stickyFirstColumn && col.index === 1}
                     active={isGutter && rowActive}
                     disabled={cellDisabled}
                     className={cx(

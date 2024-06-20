@@ -7,6 +7,5 @@ import SelectBoxTest from './SelectBox'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App />
-    <SelectBoxTest />
   </React.StrictMode>
 )

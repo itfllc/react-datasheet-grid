@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
-import cx from 'classnames'
-import Tooltip from '@mui/material/Tooltip/Tooltip'
 import { TooltipProps, styled, tooltipClasses } from '@mui/material'
+import Tooltip from '@mui/material/Tooltip/Tooltip'
+import cx from 'classnames'
+import React, { FC } from 'react'
 
 const ErrorTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -19,6 +19,7 @@ const ErrorTooltip = styled(({ className, ...props }: TooltipProps) => (
 export const Cell: FC<{
   gutter: boolean
   stickyRight: boolean
+  stickyFirstColumn?: boolean
   disabled?: boolean
   className?: string
   active?: boolean
@@ -31,6 +32,7 @@ export const Cell: FC<{
   children,
   gutter,
   stickyRight,
+  stickyFirstColumn,
   active,
   disabled,
   className,
@@ -48,6 +50,7 @@ export const Cell: FC<{
           disabled && 'dsg-cell-disabled',
           gutter && active && 'dsg-cell-gutter-active',
           stickyRight && 'dsg-cell-sticky-right',
+          stickyFirstColumn && 'dsg-cell-sticky-first',
           className
         )}
         style={{

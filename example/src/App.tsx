@@ -9,22 +9,9 @@ import {
   textColumn,
 } from '../../src'
 import '../../src/style.css'
-import { SelectionWithId } from '../../src/types'
 
-type Row = {
-  active: boolean
-  firstName: string | null
-  lastName: string | null
-  date: string | null
-  test?: {
-    data: string
-  }
-  arrayTestNest1: { data: string }[]
-  arrayTestNest2: { data: string }[][]
-}
 
 function App() {
-  const [selection, setSelection] = useState<SelectionWithId | null | undefined>(null)
   const ref = useRef<DataSheetGridRef>(null)
   const [data, setData] = useState<any[]>(DATA)
   const columns: Column<any>[] = [
@@ -51,24 +38,30 @@ function App() {
       ...keyColumn<any>('test.date', isoDateColumn),
       title: '日付',
     },
-    ...authList.map((auth, i) => ({
-      ...keyColumn<any>(`auth.${i}.isEnabled`, checkboxColumn),
-      title: auth.title,
-    })),
+    {
+      ...keyColumn<any>('user.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test.date', isoDateColumn),
+      title: '日付',
+    },
+    // ...authList.map((auth, i) => ({
+    //   ...keyColumn<any>(`auth.${i}.isEnabled`, checkboxColumn),
+    //   title: auth.title,
+    // })),
   ];
 
-  const handleClickButton = () => {
-    console.log(JSON.stringify(selection))
-    if (selection) {
-      ref.current?.setSelection(selection);
-    }
-  };
-
-  const handleSelectionChange = (selection:  { selection: SelectionWithId | null }) => {
-    if (selection.selection) {
-      setSelection(selection.selection)
-    }
-  }
 
   return (
     <div
@@ -77,11 +70,16 @@ function App() {
         padding: '50px',
         maxWidth: '900px',
         background: '#f3f3f3',
-        height: '500px',
       }}
     >
-      <button onClick={() => handleClickButton()}>console.log(data)</button>
-      <DataSheetGrid value={data} onChange={setData} columns={columns} ref={ref} onSelectionChange={handleSelectionChange} />
+      <DataSheetGrid 
+        value={data} 
+        onChange={setData} 
+        columns={columns} 
+        ref={ref}
+        stickyMaxNthColumn={1}
+        stickyFirstColumn
+      />
     </div>
   )
 }
@@ -220,6 +218,160 @@ const DATA = [
       {
         id: '2920792c-b9a7-470e-987c-43694cdfaed5',
         isEnabled: true,
+      },
+      {
+        id: '3f4c476e-1afa-4d7e-b831-8ced1c37d2ea',
+        isEnabled: true,
+      },
+      {
+        id: 'f8dd00b0-1718-4b6b-a087-aac3507dc655',
+        isEnabled: true,
+      },
+      {
+        id: 'f06a3775-536b-46ca-8c4b-2e8e60573c4a',
+        isEnabled: true,
+      },
+      {
+        id: 'a8bd796e-db58-4113-b66b-7563f0324604',
+        isEnabled: true,
+      },
+      {
+        id: '5d6765b9-8996-4a5d-b71d-676526fccb67',
+        isEnabled: true,
+      },
+    ],
+  },
+  {
+    id: 'd1d4e3e6-0b3d-4a4d-9c4c-1f9a2e6f6f4d',
+    user: {
+      account: 'cc@cc',
+      name: 'cc cc',
+    },
+    auth: [
+      {
+        id: '04a3e85d-c901-44d4-9761-748790523279',
+        isEnabled: true,
+      },
+      {
+        id: '8450161e-acd3-4c27-b2c3-fc0be3ecdebb',
+        isEnabled: true,
+      },
+      {
+        id: 'd0eba3ac-2eee-4fe2-8d31-d46910524dad',
+        isEnabled: true,
+      },
+      {
+        id: '3df8c683-bab5-4cc9-8e0f-b7dd13089209',
+        isEnabled: true,
+      },
+      {
+        id: '6aa310c4-483c-41d2-ba48-a42ec65a705b',
+        isEnabled: true,
+      },
+      {
+        id: '91152d03-8bd4-400e-acad-882e506cdc0b',
+        isEnabled: true,
+      },
+      {
+        id: 'c26efcca-0b6f-463e-b129-2db9f9a54fb2',
+        isEnabled: true,
+      },
+      {
+        id: '5f44dc98-ee7e-4587-8fbf-fb9f080b392b',
+        isEnabled: true,
+      },
+      {
+        id: '4db5a9db-a2b3-475a-a227-fc564af89bd4',
+        isEnabled: true,
+      },
+      {
+        id: '9795400e-344e-4a56-ad75-7fa75d5f6ef0',
+        isEnabled: true,
+      },
+      {
+        id: '97062e60-554d-41e4-bf5b-22060f77c4b8',
+        isEnabled: true,
+      },
+      {
+        id: '2920792c-b9a7-470e-987c-43694cdfaed5',
+        isEnabled: true,
+      },
+      {
+        id: '3f4c476e-1afa-4d7e-b831-8ced1c37d2ea',
+        isEnabled: true,
+      },
+      {
+        id: 'f8dd00b0-1718-4b6b-a087-aac3507dc655',
+        isEnabled: true,
+      },
+      {
+        id: 'f06a3775-536b-46ca-8c4b-2e8e60573c4a',
+        isEnabled: true,
+      },
+      {
+        id: 'a8bd796e-db58-4113-b66b-7563f0324604',
+        isEnabled: true,
+      },
+      {
+        id: '5d6765b9-8996-4a5d-b71d-676526fccb67',
+        isEnabled: true,
+      },
+    ],
+  },
+  {
+    id: 'f3a4b5b7-4a4d-4c4d-8c4c-1f9a2e6f6f4d',
+    user: {
+      account: 'dd@dd',
+      name: 'dd dd',
+    },
+    auth: [
+      {
+        id: '04a3e85d-c901-44d4-9761-748790523279',
+        isEnabled: true,
+      },
+      {
+        id: '8450161e-acd3-4c27-b2c3-fc0be3ecdebb',
+        isEnabled: true,
+      },
+      {
+        id: 'd0eba3ac-2eee-4fe2-8d31-d46910524dad',
+        isEnabled: true,
+      },
+      {
+        id: '3df8c683-bab5-4cc9-8e0f-b7dd13089209',
+        isEnabled: true,
+      },
+      {
+        id: '6aa310c4-483c-41d2-ba48-a42ec65a705b',
+        isEnabled: true,
+      },
+      {
+        id: '91152d03-8bd4-400e-acad-882e506cdc0b',
+        isEnabled: true,
+      },
+      {
+        id: 'c26efcca-0b6f-463e-b129-2db9f9a54fb2',
+        isEnabled: true,
+      },
+      {
+        id: '5f44dc98-ee7e-4587-8fbf-fb9f080b392b',
+        isEnabled: true,
+      },
+      {
+        id: '4db5a9db-a2b3-475a-a227-fc564af89bd4',
+        isEnabled: true,
+      },
+      {
+        id: '9795400e-344e-4a56-ad75-7fa75d5f6ef0',
+        isEnabled: true,
+      },
+      {
+        id: '97062e60-554d-41e4-bf5b-22060f77c4b8',
+        isEnabled: true,
+      },
+      {
+        id: '2920792c-b9a7-470e-987c-43694cdfaed5',
+        isEnabled: true
       },
       {
         id: '3f4c476e-1afa-4d7e-b831-8ced1c37d2ea',

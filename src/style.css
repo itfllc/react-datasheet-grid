@@ -81,6 +81,14 @@
   transform: translateY(-100%);
 }
 
+.dsg-cell-sticky-first {
+  position: sticky;
+  top: 0;
+  z-index: 23;
+  margin-right: auto;
+  transform: translateY(-100%);
+}
+
 .dsg-cell-disabled {
   background: var(--dsg-cell-disabled-background-color);
 }
@@ -102,6 +110,10 @@
 }
 
 .dsg-cell-header.dsg-cell-gutter {
+  box-shadow: 1px 0 var(--dsg-border-color), 0 1px var(--dsg-border-color);
+}
+
+.dsg-cell-header.dsg-cell-sticky-first {
   box-shadow: 1px 0 var(--dsg-border-color), 0 1px var(--dsg-border-color);
 }
 
@@ -142,6 +154,11 @@
 .dsg-active-cell-disabled,
 .dsg-selection-rect-disabled {
   border-color: var(--dsg-selection-disabled-border-color);
+}
+
+.dsg-active-cell-sticky-first {
+  position: sticky;
+  z-index: 40;
 }
 
 .dsg-selection-rect {
@@ -409,6 +426,7 @@
 .dsg-selection-col-marker-container {
   position: absolute;
   top: 0;
+  z-index: 20;
 }
 
 .dsg-selection-col-marker {
@@ -434,7 +452,7 @@
 .dsg-selection-col-marker,
 .dsg-selection-row-marker-container,
 .dsg-selection-row-marker {
-  z-index: 20;
+  z-index: 25;
   transition: all var(--dsg-transition-duration);
   pointer-events: none;
 }
