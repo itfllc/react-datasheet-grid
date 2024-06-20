@@ -87,7 +87,7 @@ export type SelectionContextType = {
   selection: Selection | null
   dataLength: number
   rowHeight: (index: number) => { height: number; top: number }
-  stickyFirstColumn?: boolean
+  stickyLeftColumnNumber?: number
   hasStickyRightColumn: boolean
   editing: boolean
   isCellDisabled: (cell: Cell) => boolean
@@ -167,8 +167,7 @@ export type DataSheetGridProps<T> = {
   columns?: Partial<Column<T, any, any>>[]
   gutterColumn?: SimpleColumn<T, any> | false
   stickyRightColumn?: SimpleColumn<T, any>
-  stickyFirstColumn?: boolean
-  stickyMaxNthColumn?: number
+  stickyLeftColumnNumber?: number
   rowKey?: string | ((opts: { rowData: T; rowIndex: number }) => string)
   height?: number
   rowHeight?: number | ((opt: { rowData: T; rowIndex: number }) => number)

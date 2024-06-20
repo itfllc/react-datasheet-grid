@@ -26,7 +26,7 @@ function App() {
           }
         },
       ],
-      disabled: true,
+      // disabled: true,
       //   errorPlacement: 'right',
     },
     {
@@ -39,21 +39,93 @@ function App() {
       title: '日付',
     },
     {
-      ...keyColumn<any>('user.name', textColumn),
+      ...keyColumn<any>('user2.name', textColumn),
       title: 'ユーザー名',
       minWidth: 200,
     },
     {
-      ...keyColumn<any>('test.date', isoDateColumn),
+      ...keyColumn<any>('test2.date', isoDateColumn),
       title: '日付',
     },
     {
-      ...keyColumn<any>('user.name', textColumn),
+      ...keyColumn<any>('user3.name', textColumn),
       title: 'ユーザー名',
       minWidth: 200,
     },
     {
-      ...keyColumn<any>('test.date', isoDateColumn),
+      ...keyColumn<any>('test4.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user5.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test6.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user7.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test8.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user9.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test10.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user11.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test12.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user13.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test14.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user15.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test16.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user17.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test18.date', isoDateColumn),
+      title: '日付',
+    },
+    {
+      ...keyColumn<any>('user19.name', textColumn),
+      title: 'ユーザー名',
+      minWidth: 200,
+    },
+    {
+      ...keyColumn<any>('test20.date', isoDateColumn),
       title: '日付',
     },
     // ...authList.map((auth, i) => ({
@@ -77,8 +149,7 @@ function App() {
         onChange={setData} 
         columns={columns} 
         ref={ref}
-        stickyMaxNthColumn={1}
-        stickyFirstColumn
+        stickyLeftColumnNumber={2}
       />
     </div>
   )

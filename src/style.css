@@ -86,7 +86,6 @@
   top: 0;
   z-index: 23;
   margin-right: auto;
-  transform: translateY(-100%);
 }
 
 .dsg-cell-disabled {

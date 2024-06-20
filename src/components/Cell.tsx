@@ -19,7 +19,7 @@ const ErrorTooltip = styled(({ className, ...props }: TooltipProps) => (
 export const Cell: FC<{
   gutter: boolean
   stickyRight: boolean
-  stickyFirstColumn?: boolean
+  stickyColumn?: boolean
   disabled?: boolean
   className?: string
   active?: boolean
@@ -28,11 +28,12 @@ export const Cell: FC<{
   left: number
   dataTooltipContent?: string
   errorPlacement?: TooltipProps['placement']
+  colIndex?: number
 }> = ({
   children,
   gutter,
   stickyRight,
-  stickyFirstColumn,
+  stickyColumn,
   active,
   disabled,
   className,
@@ -40,6 +41,7 @@ export const Cell: FC<{
   left,
   dataTooltipContent,
   errorPlacement,
+  colIndex
 }) => {
   return (
     <ErrorTooltip title={dataTooltipContent} placement={errorPlacement} arrow>
@@ -50,12 +52,13 @@ export const Cell: FC<{
           disabled && 'dsg-cell-disabled',
           gutter && active && 'dsg-cell-gutter-active',
           stickyRight && 'dsg-cell-sticky-right',
-          stickyFirstColumn && 'dsg-cell-sticky-first',
+          stickyColumn && 'dsg-cell-sticky-first',
           className
         )}
         style={{
           width,
           left: stickyRight ? undefined : left,
+          transform: stickyColumn ? `translateY(-${(colIndex || 0) > 0 ? ((colIndex || 0) ) * 100 : 0}%)` : "unset"
         }}
       >
         {children}

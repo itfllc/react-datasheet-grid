@@ -19,7 +19,7 @@ export const Grid = <T extends any>({
   innerRef,
   columnWidths,
   hasStickyRightColumn,
-  stickyFirstColumn,
+  stickyLeftColumnNumber,
   displayHeight,
   headerRowHeight,
   rowHeight,
@@ -46,7 +46,7 @@ export const Grid = <T extends any>({
   innerRef: RefObject<HTMLDivElement>
   columnWidths?: number[]
   hasStickyRightColumn: boolean
-  stickyFirstColumn?: boolean
+  stickyLeftColumnNumber?: number
   displayHeight: number
   headerRowHeight: number
   rowHeight: (index: number) => { height: number }
@@ -109,12 +109,18 @@ export const Grid = <T extends any>({
     overscan: 1,
     rangeExtractor: (range) => {
       const result = defaultRangeExtractor(range)
+      
       if (result[0] !== 0) {
         result.unshift(0)
       }
 
-      if (stickyFirstColumn && result[1] !== 1) {
-        result.splice(1, 0, 1)
+      if (stickyLeftColumnNumber != null) {
+        const stickyColumnArray = Array.from({ length: stickyLeftColumnNumber }, (_, i) => i+1)
+        stickyColumnArray.forEach((stickyIndex) => {
+          if (result[stickyIndex] !== stickyIndex) {
+            result.splice(stickyIndex, 0, stickyIndex)
+          }
+        })
       }
 
       if (
@@ -170,7 +176,7 @@ export const Grid = <T extends any>({
                 stickyRight={
                   hasStickyRightColumn && col.index === columns.length - 1
                 }
-                stickyFirstColumn={stickyFirstColumn && col.index === 1}
+                stickyColumn={stickyLeftColumnNumber != null && col.index <= stickyLeftColumnNumber}
                 width={col.size}
                 left={col.start}
                 className={cx(
@@ -182,6 +188,7 @@ export const Grid = <T extends any>({
                     'dsg-cell-header-active',
                   columns[col.index].headerClassName
                 )}
+                colIndex={col.index}
               >
                 <div className="dsg-cell-header-container">
                   {columns[col.index].title}
@@ -281,7 +288,7 @@ export const Grid = <T extends any>({
                     stickyRight={
                       hasStickyRightColumn && col.index === columns.length - 1
                     }
-                    stickyFirstColumn={stickyFirstColumn && col.index === 1}
+                    stickyColumn={stickyLeftColumnNumber != null && col.index <= stickyLeftColumnNumber}
                     active={isGutter && rowActive}
                     disabled={cellDisabled}
                     className={cx(
@@ -309,6 +316,7 @@ export const Grid = <T extends any>({
                     left={col.start}
                     dataTooltipContent={displayValidationError}
                     errorPlacement={columns[col.index].errorPlacement}
+                    colIndex={col.index}
                   >
                     <Component
                       row={data[row.index]}
