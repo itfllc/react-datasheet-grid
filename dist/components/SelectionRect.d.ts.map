@@ -1,1 +1,1 @@
-{"version":3,"file":"SelectionRect.d.ts","sourceRoot":"","sources":["../../src/components/SelectionRect.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAkB,MAAM,OAAO,CAAA;AAEtC,OAAO,EAAE,oBAAoB,EAAE,MAAM,UAAU,CAAA;AAuC/C,eAAO,MAAM,aAAa,kDAqOzB,CAAA"}
+{"version":3,"file":"SelectionRect.d.ts","sourceRoot":"","sources":["../../src/components/SelectionRect.tsx"],"names":[],"mappings":"AACA,OAAO,KAAkB,MAAM,OAAO,CAAA;AACtC,OAAO,EAAE,oBAAoB,EAAE,MAAM,UAAU,CAAA;AAuC/C,eAAO,MAAM,aAAa,kDA+SzB,CAAA"}

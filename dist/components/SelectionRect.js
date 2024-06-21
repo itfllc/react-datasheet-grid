@@ -27,8 +27,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SelectionRect = void 0;
-const react_1 = __importStar(require("react"));
 const classnames_1 = __importDefault(require("classnames"));
+const react_1 = __importStar(require("react"));
 const buildSquare = (top, right, bottom, left) => {
     return [
         [left, top],
@@ -49,9 +49,14 @@ const buildClipPath = (top, right, bottom, left) => {
         .join(' '))
         .join(',')})`;
 };
-exports.SelectionRect = react_1.default.memo(({ columnWidths, columnRights, headerRowHeight, selection, rowHeight, activeCell, hasStickyRightColumn, dataLength, viewWidth, viewHeight, contentWidth, edges, isCellDisabled, editing, expandSelection, }) => {
-    var _a, _b, _c, _d;
+exports.SelectionRect = react_1.default.memo(({ columnWidths, columnRights, headerRowHeight, selection, rowHeight, activeCell, hasStickyRightColumn, stickyLeftColumnNumber, dataLength, viewWidth, viewHeight, contentWidth, edges, isCellDisabled, editing, expandSelection, }) => {
+    var _a, _b, _c, _d, _e;
     const activeCellIsDisabled = activeCell ? isCellDisabled(activeCell) : false;
+    const stickyLeftColumnIndexes = (0, react_1.useMemo)(() => {
+        return stickyLeftColumnNumber != null
+            ? Array.from({ length: stickyLeftColumnNumber }, (_, i) => i + 1)
+            : [];
+    }, [stickyLeftColumnNumber]);
     const selectionIsDisabled = (0, react_1.useMemo)(() => {
         if (!selection) {
             return activeCellIsDisabled;
@@ -136,18 +141,32 @@ exports.SelectionRect = react_1.default.memo(({ columnWidths, columnRights, head
                     'dsg-scrollable-view-l': !edges.left,
                 }), style: {
                     top: headerRowHeight,
-                    left: columnWidths[0],
+                    // left: columnWidths[0] + (stickyFirstColumn ? columnWidths[1] : 0),
+                    // stickyLeftColumnNumber までのcolumnWidthsを足す
+                    left: columnWidths[0] +
+                        (stickyLeftColumnNumber != null
+                            ? columnWidths === null || columnWidths === void 0 ? void 0 : columnWidths.slice(1, stickyLeftColumnNumber + 1).reduce((a, b) => a + b)
+                            : 0),
                     height: viewHeight ? viewHeight - headerRowHeight : 0,
                     width: contentWidth && viewWidth
                         ? viewWidth -
                             columnWidths[0] -
                             (hasStickyRightColumn
                                 ? columnWidths[columnWidths.length - 1]
+                                : 0) -
+                            (stickyLeftColumnNumber != null
+                                ? columnWidths === null || columnWidths === void 0 ? void 0 : columnWidths.slice(1, stickyLeftColumnNumber + 1).reduce((a, b) => a + b)
                                 : 0)
-                        : `calc(100% - ${columnWidths[0] +
-                            (hasStickyRightColumn
-                                ? columnWidths[columnWidths.length - 1]
-                                : 0)}px)`,
+                        : // (stickyFirstColumn ? columnWidths[1] : 0)
+                            `calc(100% - ${columnWidths[0] +
+                                (hasStickyRightColumn
+                                    ? columnWidths[columnWidths.length - 1]
+                                    : 0) +
+                                (stickyLeftColumnNumber != null
+                                    ? columnWidths === null || columnWidths === void 0 ? void 0 : columnWidths.slice(1, stickyLeftColumnNumber + 1).reduce((a, b) => a + b)
+                                    : 0)
+                            // (stickyFirstColumn ? columnWidths[1] : 0)
+                            }px)`,
                 } })),
         (selectionRect || activeCellRect) && (react_1.default.createElement("div", { className: "dsg-selection-col-marker-container", style: {
                 left: (_a = selectionRect === null || selectionRect === void 0 ? void 0 : selectionRect.left) !== null && _a !== void 0 ? _a : activeCellRect === null || activeCellRect === void 0 ? void 0 : activeCellRect.left,
@@ -163,13 +182,32 @@ exports.SelectionRect = react_1.default.memo(({ columnWidths, columnRights, head
                 width: contentWidth ? contentWidth : '100%',
             } },
             react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-selection-row-marker', selectionIsDisabled && 'dsg-selection-row-marker-disabled'), style: { left: columnWidths[0] } }))),
-        activeCellRect && activeCell && (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-active-cell', {
-                'dsg-active-cell-focus': editing,
-                'dsg-active-cell-disabled': activeCellIsDisabled,
-            }), style: activeCellRect })),
+        activeCellRect &&
+            activeCell &&
+            (stickyLeftColumnNumber != null &&
+                stickyLeftColumnIndexes.includes(activeCell.col + 1) ? (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-active-cell-sticky-first', {
+                    'dsg-active-cell-focus': editing,
+                    'dsg-active-cell-disabled': activeCellIsDisabled,
+                }), style: Object.assign(Object.assign({}, activeCellRect), { top: 'auto' }) },
+                react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-active-cell', 'dsg-active-cell-sticky-first', {
+                        'dsg-active-cell-focus': editing,
+                        'dsg-active-cell-disabled': activeCellIsDisabled,
+                    }), style: Object.assign(Object.assign({}, activeCellRect), { position: 'absolute', left: 0, top: activeCellRect.top - headerRowHeight }) }))) : (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-active-cell', {
+                    'dsg-active-cell-focus': editing,
+                    'dsg-active-cell-disabled': activeCellIsDisabled,
+                }), style: activeCellRect }))),
         selectionRect && activeCellRect && (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-selection-rect', selectionIsDisabled && 'dsg-selection-rect-disabled'), style: Object.assign(Object.assign({}, selectionRect), { clipPath: buildClipPath(activeCellRect.top - selectionRect.top, activeCellRect.left - selectionRect.left, activeCellRect.top + activeCellRect.height - selectionRect.top, activeCellRect.left + activeCellRect.width - selectionRect.left) }) })),
-        expandRowsRect && (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-expand-rows-rect'), style: expandRowsRect })),
-        expandRowsIndicator && (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-expand-rows-indicator', selectionIsDisabled && 'dsg-expand-rows-indicator-disabled'), style: expandRowsIndicator }))));
+        expandRowsIndicator && (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-expand-rows-indicator', selectionIsDisabled && 'dsg-expand-rows-indicator-disabled', stickyLeftColumnNumber != null &&
+                ((!selection &&
+                    activeCell &&
+                    stickyLeftColumnIndexes.includes(activeCell.col + 1)) ||
+                    stickyLeftColumnIndexes.includes((((_e = selection === null || selection === void 0 ? void 0 : selection.max) === null || _e === void 0 ? void 0 : _e.col) || -10) + 1)) &&
+                'dsg-expand-rows-indicator-sticky-first'), style: expandRowsIndicator })),
+        ' ',
+        expandRowsRect && (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-expand-rows-rect', stickyLeftColumnNumber != null &&
+                activeCell &&
+                stickyLeftColumnIndexes.includes(activeCell.col + 1) &&
+                'dsg-expand-rows-rect-sticky-first'), style: expandRowsRect }))));
 });
 exports.SelectionRect.displayName = 'SelectionRect';
 //# sourceMappingURL=SelectionRect.js.map

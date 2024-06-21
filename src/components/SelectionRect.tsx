@@ -59,9 +59,11 @@ export const SelectionRect = React.memo<SelectionContextType>(
     expandSelection,
   }) => {
     const activeCellIsDisabled = activeCell ? isCellDisabled(activeCell) : false
-    const stickyLeftColumnIndexs = useMemo(() => {
-      return stickyLeftColumnNumber != null ? Array.from({length: stickyLeftColumnNumber}, (_, i) => i+1) : [];
-    }, [stickyLeftColumnNumber]);
+    const stickyLeftColumnIndexes = useMemo(() => {
+      return stickyLeftColumnNumber != null
+        ? Array.from({ length: stickyLeftColumnNumber }, (_, i) => i + 1)
+        : []
+    }, [stickyLeftColumnNumber])
 
     const selectionIsDisabled = useMemo(() => {
       if (!selection) {
@@ -176,7 +178,13 @@ export const SelectionRect = React.memo<SelectionContextType>(
               top: headerRowHeight,
               // left: columnWidths[0] + (stickyFirstColumn ? columnWidths[1] : 0),
               // stickyLeftColumnNumber までのcolumnWidthsを足す
-              left: columnWidths[0] + (stickyLeftColumnNumber != null ? columnWidths?.slice(1, stickyLeftColumnNumber + 1).reduce((a, b) => a + b) : 0),
+              left:
+                columnWidths[0] +
+                (stickyLeftColumnNumber != null
+                  ? columnWidths
+                      ?.slice(1, stickyLeftColumnNumber + 1)
+                      .reduce((a, b) => a + b)
+                  : 0),
               height: viewHeight ? viewHeight - headerRowHeight : 0,
               width:
                 contentWidth && viewWidth
@@ -185,14 +193,22 @@ export const SelectionRect = React.memo<SelectionContextType>(
                     (hasStickyRightColumn
                       ? columnWidths[columnWidths.length - 1]
                       : 0) -
-                      (stickyLeftColumnNumber != null ? columnWidths?.slice(1, stickyLeftColumnNumber + 1).reduce((a, b) => a + b) : 0)
-                      // (stickyFirstColumn ? columnWidths[1] : 0)
-                  : `calc(100% - ${
+                    (stickyLeftColumnNumber != null
+                      ? columnWidths
+                          ?.slice(1, stickyLeftColumnNumber + 1)
+                          .reduce((a, b) => a + b)
+                      : 0)
+                  : // (stickyFirstColumn ? columnWidths[1] : 0)
+                    `calc(100% - ${
                       columnWidths[0] +
                       (hasStickyRightColumn
                         ? columnWidths[columnWidths.length - 1]
                         : 0) +
-                        (stickyLeftColumnNumber != null ? columnWidths?.slice(1, stickyLeftColumnNumber + 1).reduce((a, b) => a + b) : 0)
+                      (stickyLeftColumnNumber != null
+                        ? columnWidths
+                            ?.slice(1, stickyLeftColumnNumber + 1)
+                            .reduce((a, b) => a + b)
+                        : 0)
                       // (stickyFirstColumn ? columnWidths[1] : 0)
                     }px)`,
             }}
@@ -237,43 +253,46 @@ export const SelectionRect = React.memo<SelectionContextType>(
             />
           </div>
         )}
-        {activeCellRect && activeCell && (
-          stickyLeftColumnNumber != null && stickyLeftColumnIndexs.includes(activeCell.col + 1) ?
-          (
+        {activeCellRect &&
+          activeCell &&
+          (stickyLeftColumnNumber != null &&
+          stickyLeftColumnIndexes.includes(activeCell.col + 1) ? (
             <div
-            className={cx('dsg-active-cell-sticky-first',{
-              'dsg-active-cell-focus': editing,
-              'dsg-active-cell-disabled': activeCellIsDisabled,
-            })}
-            style={{
-              ...activeCellRect,
-              top: 'auto',
-
-
-            }}
-          >
-            <div className={cx( 'dsg-active-cell', 'dsg-active-cell-sticky-first',{
-              'dsg-active-cell-focus': editing,
-              'dsg-active-cell-disabled': activeCellIsDisabled,
-            })} style={{
-              ... activeCellRect,
-              position: 'absolute',
-              left: 0,
-              top: activeCellRect.top - headerRowHeight,
-            }} />
-          </div>
-          )
-          : 
-          (
+              className={cx('dsg-active-cell-sticky-first', {
+                'dsg-active-cell-focus': editing,
+                'dsg-active-cell-disabled': activeCellIsDisabled,
+              })}
+              style={{
+                ...activeCellRect,
+                top: 'auto',
+              }}
+            >
+              <div
+                className={cx(
+                  'dsg-active-cell',
+                  'dsg-active-cell-sticky-first',
+                  {
+                    'dsg-active-cell-focus': editing,
+                    'dsg-active-cell-disabled': activeCellIsDisabled,
+                  }
+                )}
+                style={{
+                  ...activeCellRect,
+                  position: 'absolute',
+                  left: 0,
+                  top: activeCellRect.top - headerRowHeight,
+                }}
+              />
+            </div>
+          ) : (
             <div
-            className={cx('dsg-active-cell', {
-              'dsg-active-cell-focus': editing,
-              'dsg-active-cell-disabled': activeCellIsDisabled,
-            })}
-            style={activeCellRect}
-          />
-          )
-        )}
+              className={cx('dsg-active-cell', {
+                'dsg-active-cell-focus': editing,
+                'dsg-active-cell-disabled': activeCellIsDisabled,
+              })}
+              style={activeCellRect}
+            />
+          ))}
         {selectionRect && activeCellRect && (
           <div
             className={cx(
@@ -297,9 +316,13 @@ export const SelectionRect = React.memo<SelectionContextType>(
               'dsg-expand-rows-indicator',
               selectionIsDisabled && 'dsg-expand-rows-indicator-disabled',
               stickyLeftColumnNumber != null &&
-              ((!selection && activeCell && stickyLeftColumnIndexs.includes(activeCell.col + 1)) ||
-              stickyLeftColumnIndexs.includes((selection?.max?.col || -10) + 1)) &&
-              'dsg-expand-rows-indicator-sticky-first'
+                ((!selection &&
+                  activeCell &&
+                  stickyLeftColumnIndexes.includes(activeCell.col + 1)) ||
+                  stickyLeftColumnIndexes.includes(
+                    (selection?.max?.col || -10) + 1
+                  )) &&
+                'dsg-expand-rows-indicator-sticky-first'
             )}
             style={expandRowsIndicator}
           />
@@ -309,8 +332,9 @@ export const SelectionRect = React.memo<SelectionContextType>(
             className={cx(
               'dsg-expand-rows-rect',
               stickyLeftColumnNumber != null &&
-              activeCell && stickyLeftColumnIndexs.includes(activeCell.col + 1) && 
-              'dsg-expand-rows-rect-sticky-first'
+                activeCell &&
+                stickyLeftColumnIndexes.includes(activeCell.col + 1) &&
+                'dsg-expand-rows-rect-sticky-first'
             )}
             style={expandRowsRect}
           />

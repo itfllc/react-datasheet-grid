@@ -28,12 +28,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Grid = void 0;
 const react_virtual_1 = require("@tanstack/react-virtual");
-const react_1 = __importStar(require("react"));
 const classnames_1 = __importDefault(require("classnames"));
-const Cell_1 = require("./Cell");
+const react_1 = __importStar(require("react"));
 const useMemoizedIndexCallback_1 = require("../hooks/useMemoizedIndexCallback");
+const Cell_1 = require("./Cell");
 const Resizer_1 = __importDefault(require("./Resizer"));
-const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightColumn, displayHeight, headerRowHeight, rowHeight, rowKey, fullWidth, selection, activeCell, rowClassName, cellClassName, children, editing, getContextMenuItems, setRowData, deleteRows, duplicateRows, insertRowAfter, stopEditing, onScroll, setColumnsWidth }) => {
+const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightColumn, stickyLeftColumnNumber, displayHeight, headerRowHeight, rowHeight, rowKey, fullWidth, selection, activeCell, rowClassName, cellClassName, children, editing, getContextMenuItems, setRowData, deleteRows, duplicateRows, insertRowAfter, stopEditing, onScroll, setColumnsWidth, }) => {
     var _a, _b, _c, _d;
     const rowVirtualizer = (0, react_virtual_1.useVirtualizer)({
         count: data.length,
@@ -71,6 +71,14 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
             if (result[0] !== 0) {
                 result.unshift(0);
             }
+            if (stickyLeftColumnNumber != null) {
+                const stickyColumnArray = Array.from({ length: stickyLeftColumnNumber }, (_, i) => i + 1);
+                stickyColumnArray.forEach((stickyIndex) => {
+                    if (result[stickyIndex] !== stickyIndex) {
+                        result.splice(stickyIndex, 0, stickyIndex);
+                    }
+                });
+            }
             if (hasStickyRightColumn &&
                 result[result.length - 1] !== columns.length - 1) {
                 result.push(columns.length - 1);
@@ -97,11 +105,11 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
             headerRowHeight > 0 && (react_1.default.createElement("div", { className: (0, classnames_1.default)('dsg-row', 'dsg-row-header'), style: {
                     width: fullWidth ? '100%' : colVirtualizer.getTotalSize(),
                     height: headerRowHeight,
-                } }, colVirtualizer.getVirtualItems().map((col) => (react_1.default.createElement(Cell_1.Cell, { key: col.key, gutter: col.index === 0, stickyRight: hasStickyRightColumn && col.index === columns.length - 1, width: col.size, left: col.start, className: (0, classnames_1.default)('dsg-cell-header', selectionColMin !== undefined &&
+                } }, colVirtualizer.getVirtualItems().map((col) => (react_1.default.createElement(Cell_1.Cell, { key: col.key, gutter: col.index === 0, stickyRight: hasStickyRightColumn && col.index === columns.length - 1, stickyColumn: stickyLeftColumnNumber != null && col.index <= stickyLeftColumnNumber, width: col.size, left: col.start, className: (0, classnames_1.default)('dsg-cell-header', selectionColMin !== undefined &&
                     selectionColMax !== undefined &&
                     selectionColMin <= col.index - 1 &&
                     selectionColMax >= col.index - 1 &&
-                    'dsg-cell-header-active', columns[col.index].headerClassName) },
+                    'dsg-cell-header-active', columns[col.index].headerClassName), colIndex: col.index },
                 react_1.default.createElement("div", { className: "dsg-cell-header-container" }, columns[col.index].title),
                 react_1.default.createElement(Resizer_1.default, { column: columns[col.index], setColumnsWidth: setColumnsWidth })))))),
             rowVirtualizer.getVirtualItems().map((row) => {
@@ -161,7 +169,7 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                     else {
                         displayValidationError = cellErrorMessages === null || cellErrorMessages === void 0 ? void 0 : cellErrorMessages.join('\n');
                     }
-                    return (react_1.default.createElement(Cell_1.Cell, { key: col.key, gutter: isGutter, stickyRight: hasStickyRightColumn && col.index === columns.length - 1, active: isGutter && rowActive, disabled: cellDisabled, className: (0, classnames_1.default)(typeof colCellClassName === 'function'
+                    return (react_1.default.createElement(Cell_1.Cell, { key: col.key, gutter: isGutter, stickyRight: hasStickyRightColumn && col.index === columns.length - 1, stickyColumn: stickyLeftColumnNumber != null && col.index <= stickyLeftColumnNumber, active: isGutter && rowActive, disabled: cellDisabled, className: (0, classnames_1.default)(typeof colCellClassName === 'function'
                             ? colCellClassName({
                                 rowData: data[row.index],
                                 rowIndex: row.index,
@@ -177,7 +185,7 @@ const Grid = ({ data, columns, outerRef, innerRef, columnWidths, hasStickyRightC
                             ? isGutter
                                 ? 'gutter-error-cell'
                                 : 'error-cell'
-                            : ''), width: col.size, left: col.start, dataTooltipContent: displayValidationError, errorPlacement: columns[col.index].errorPlacement },
+                            : ''), width: col.size, left: col.start, dataTooltipContent: displayValidationError, errorPlacement: columns[col.index].errorPlacement, colIndex: col.index },
                         react_1.default.createElement(Component, { row: data[row.index], rowData: data[row.index], getContextMenuItems: getContextMenuItems, disabled: cellDisabled, active: cellIsActive, columnIndex: col.index - 1, rowIndex: row.index, focus: cellIsActive && editing, deleteRow: deleteGivenRow(row.index), duplicateRow: duplicateGivenRow(row.index), stopEditing: stopEditing, insertRowBelow: insertAfterGivenRow(row.index), setRowData: setGivenRowData(row.index), columnData: columns[col.index].columnData })));
                 })));
             }),

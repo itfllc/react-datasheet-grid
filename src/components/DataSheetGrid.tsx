@@ -258,7 +258,8 @@ export const DataSheetGrid = React.memo(
               }
               if (
                 stickyLeftColumnNumber &&
-                event.clientX - outerBoundingClientRect.left <= columnRights[stickyLeftColumnNumber]
+                event.clientX - outerBoundingClientRect.left <=
+                  columnRights[stickyLeftColumnNumber]
               ) {
                 x = event.clientX - outerBoundingClientRect.left
               }
@@ -459,13 +460,6 @@ export const DataSheetGrid = React.memo(
           scrollTo(selectionCell)
         }
       }, [selectionCell, scrollTo])
-
-      // Scroll to the active cell when it changes
-      useEffect(() => {
-        if (activeCell) {
-          scrollTo(activeCell)
-        }
-      }, [activeCell, scrollTo])
 
       const setRowData = useCallback(
         (rowIndex: number, item: T) => {
